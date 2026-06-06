@@ -1519,26 +1519,18 @@ var ZARA_SYSTEM = 'Você é Zara, o oráculo espiritual do app Amor Revelado. ' 
 // CHAMADA À API DO CLAUDE
 // ============================================
 async function chamarZara(prompt){
-  if(!CHAVE_API || CHAVE_API === 'SUA_CHAVE_AQUI') return null;
   try {
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
+    var response = await fetch('/api/zara', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': CHAVE_API,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: MODELO,
-        max_tokens: 300,
-        system: ZARA_SYSTEM,
-        messages: [{ role: 'user', content: prompt }]
+        prompt: prompt,
+        system: ZARA_SYSTEM
       })
     });
     if(!response.ok){ console.log('Erro API:', response.status); return null; }
     var data = await response.json();
-    return data.content && data.content[0] ? data.content[0].text : null;
+    return data.texto || null;
   } catch(e){ console.log('Erro API:', e); return null; }
 }
 
