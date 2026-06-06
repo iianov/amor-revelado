@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#1a0f0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Amor Revelado</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #1a0f0a;
+    --bg-mid: #241408;
+    --bg-card: #2e1a0e;
+    --gold: #c9922a;
+    --gold-light: #e8b84b;
+    --gold-dim: #8a6020;
+    --amber: #d4761a;
+    --cream: #f5e6c8;
+    --cream-dim: #b89a6a;
+    --wine: #3d1a0f;
+    --text: #f0dbb8;
+    --text-dim: #9a7d55;
+    --border: rgba(201,146,42,0.25);
+    --border-bright: rgba(201,146,42,0.6);
+    color-scheme: dark;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #1a0f0a !important;
+    background-color: #1a0f0a !important;
+  }
+
+  html { min-height: 100%; }
+
+  body {
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* FORÇA FUNDO ESCURO EM TODAS AS TELAS */
+  .screen {
+    background-color: #1a0f0a !important;
+  }
+
+  /* BACKGROUND TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,146,42,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 100%, rgba(212,118,26,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* COMPATIBILIDADE iOS/ANDROID */
+  * { -webkit-box-sizing: border-box; box-sizing: border-box; }
+  input, textarea, select, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 8px;
+    font-family: inherit;
+  }
+  input[type="date"] {
+    color: var(--text);
+    background: rgba(0,0,0,0.3);
+    min-height: 44px;
+  }
+  textarea { -webkit-overflow-scrolling: touch; }
+  button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .screen { -webkit-overflow-scrolling: touch; }
+  @supports (-webkit-touch-callout: none) {
+    .screen { min-height: -webkit-fill-available; }
+  }
+
+  /* STAR PARTICLES */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--gold-light);
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) var(--delay, 0s) infinite alternate;
+    opacity: 0.3;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.1; transform: scale(0.8); }
+    100% { opacity: 0.7; transform: scale(1.2); }
+  }
+
+  /* SCREENS */
+  .screen {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+    background-color: #1a0f0a !important;
+    animation: fadeIn 0.6s ease;
+  }
+  .screen.active { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* LOGO */
+  .logo-area {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .logo-symbol {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 8px;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(201,146,42,0.5));
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(201,146,42,0.4)); }
+    50% { filter: drop-shadow(0 0 30px rgba(201,146,42,0.8)); }
+  }
+  .logo-title {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(201,146,42,0.4);
+  }
+  .logo-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--cream-dim);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+  .divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 16px auto;
+  }
+
+  /* CARD */
+  .card {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,146,42,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold-light);
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .card-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--cream-dim);
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  /* INPUTS */
+  .input-group {
+    margin-bottom: 18px;
+  }
+  .input-label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+    font-family: 'Cinzel', serif;
+  }
+  .input-field {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .input-field:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(201,146,42,0.15);
+  }
+  .input-field::placeholder { color: var(--text-dim); }
+  .input-field option { background: var(--bg-card); color: var(--text); }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    color: var(--bg-deep);
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+    box-shadow: 0 4px 20px rgba(201,146,42,0.3);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    box-shadow: 0 6px 30px rgba(201,146,42,0.5);
+    transform: translateY(-1px);
+  }
+  .btn-secondary {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    padding: 13px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 12px;
+  }
+  .btn-secondary:hover {
+    background: rgba(201,146,42,0.08);
+    border-color: var(--gold-light);
+  }
+  .btn-ghost {
+    background: transparent;
+    border: none;
+    color: var(--cream-dim);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'Lato', sans-serif;
+    margin-top: 16px;
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* GUIDE SELECTOR */
+  .guide-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .guide-option {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .guide-option:hover, .guide-option.selected {
+    border-color: var(--gold);
+    background: rgba(201,146,42,0.08);
+    box-shadow: 0 0 20px rgba(201,146,42,0.1);
+  }
+  .guide-emoji { font-size: 28px; display: block; margin-bottom: 6px; }
+  .guide-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+  .guide-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* PLANS */
+  .plans-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 420px;
+  }
+  .plan-card {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .plan-card:hover, .plan-card.featured {
+    border-color: var(--gold);
+    box-shadow: 0 8px 30px rgba(201,146,42,0.2);
+  }
+  .plan-card:hover::before, .plan-card.featured::before { opacity: 1; }
+  .plan-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    color: var(--bg-deep);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .plan-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .plan-name {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .plan-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .plan-price span {
+    font-size: 14px;
+    color: var(--text-dim);
+    font-family: 'Lato', sans-serif;
+  }
+  .plan-features { list-style: none; }
+  .plan-features li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .plan-features li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+    font-size: 8px;
+    top: 6px;
+  }
+
+  /* DASHBOARD */
+  .dashboard { padding: 0; justify-content: flex-start; }
+  .dash-header {
+    width: 100%;
+    background: linear-gradient(180deg, #2e1a0e, #1a0f0a);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dash-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+  }
+  .dash-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--cream-dim);
+  }
+  .dash-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--gold-dim), var(--amber));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .dash-content {
+    width: 100%;
+    padding: 24px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+    background-color: #1a0f0a;
+  }
+
+  .greeting {
+    margin-bottom: 24px;
+  }
+  .greeting-small {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    font-family: 'Cinzel', serif;
+  }
+  .greeting-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--cream);
+    margin-top: 4px;
+  }
+  .greeting-sign {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .guide-bubble {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .guide-bubble::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .guide-bubble-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .guide-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, rgba(201,146,42,0.2), rgba(212,118,26,0.2));
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .guide-bubble-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+  .guide-bubble-role {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .guide-message {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--cream-dim);
+    font-style: italic;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 14px;
+  }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .action-card {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+  .action-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 20px rgba(201,146,42,0.15);
+    transform: translateY(-2px);
+  }
+  .action-icon { font-size: 26px; margin-bottom: 8px; display: block; }
+  .action-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+  .action-desc { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+
+  /* CONSULTA SCREEN */
+  .consult-screen { justify-content: flex-start; padding: 0; }
+  .consult-header {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #2e1a0e, #1a0f0a);
+  }
+  .back-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--cream-dim);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+  .back-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+  .consult-title {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+  }
+
+  .consult-content {
+    width: 100%;
+    padding: 24px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+    background-color: #1a0f0a;
+  }
+
+  .category-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    scrollbar-width: none;
+  }
+  .category-tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    background: rgba(201,146,42,0.08);
+    border: 1px solid rgba(201,146,42,0.4);
+    border-radius: 20px;
+    padding: 7px 12px;
+    color: var(--cream-dim);
+    font-size: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+  }
+  .tab.active {
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border-color: var(--gold-light);
+    color: var(--bg-deep);
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(201,146,42,0.35);
+  }
+  .tab:hover:not(.active) {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(201,146,42,0.15);
+  }
+
+  .question-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .question-item {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--cream-dim);
+    line-height: 1.4;
+  }
+  .question-item:hover, .question-item.selected {
+    border-color: var(--gold);
+    color: var(--cream);
+    background: rgba(201,146,42,0.06);
+    box-shadow: 0 4px 16px rgba(201,146,42,0.12);
+  }
+  .question-item.alert-ritual {
+    border-color: rgba(212,118,26,0.4);
+  }
+  .question-item.alert-ritual:hover {
+    border-color: var(--amber);
+    box-shadow: 0 4px 16px rgba(212,118,26,0.2);
+  }
+
+  /* READING */
+  .reading-area {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    display: none;
+  }
+  .reading-area::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .reading-area.visible { display: block; animation: fadeIn 0.6s ease; }
+  .reading-cards {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .tarot-card {
+    width: 64px;
+    height: 100px;
+    background: linear-gradient(145deg, rgba(201,146,42,0.15), rgba(61,26,15,0.8));
+    border: 1px solid var(--gold-dim);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    gap: 4px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    animation: cardReveal 0.5s ease forwards;
+    opacity: 0;
+    transform: rotateY(90deg);
+  }
+  .tarot-card:nth-child(2) { animation-delay: 0.2s; }
+  .tarot-card:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes cardReveal {
+    to { opacity: 1; transform: rotateY(0); }
+  }
+  .tarot-card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 7px;
+    color: var(--gold-dim);
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 0 4px;
+  }
+  .reading-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    margin-bottom: 16px;
+  }
+  .reading-signature {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-dim);
+    letter-spacing: 2px;
+    text-align: right;
+  }
+
+  /* RITUAL CTA */
+  .ritual-cta {
+    background: linear-gradient(145deg, rgba(212,118,26,0.1), rgba(61,26,15,0.8));
+    border: 1px solid rgba(212,118,26,0.4);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .ritual-cta.visible { display: block; animation: fadeIn 0.6s ease 0.8s both; }
+  .ritual-cta-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--amber);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .ritual-cta-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    color: var(--cream-dim);
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+  .btn-whatsapp {
+    width: 100%;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-whatsapp:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* RITUALS SHOP */
+  .ritual-item {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .ritual-item:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 20px rgba(201,146,42,0.15);
+  }
+  .ritual-emoji { font-size: 28px; flex-shrink: 0; }
+  .ritual-info { flex: 1; }
+  .ritual-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+  .ritual-desc { font-size: 12px; color: var(--text-dim); }
+  .ritual-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--cream);
+    flex-shrink: 0;
+  }
+  .ritual-price.whatsapp-price {
+    font-size: 12px;
+    color: var(--amber);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    text-align: right;
+  }
+
+  /* LOADING */
+  .loading-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    padding: 20px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: dotPulse 1.4s ease-in-out infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotPulse {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  /* NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #1a0f0a;
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 10;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    gap: 4px;
+  }
+  .nav-icon { font-size: 20px; }
+  .nav-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    transition: color 0.3s;
+  }
+  .nav-item.active .nav-label, .nav-item:hover .nav-label { color: var(--gold-light); }
+
+  .pb-nav { padding-bottom: 80px; }
+
+  /* HOROSCOPE */
+  .horoscope-card {
+    background: linear-gradient(145deg, var(--bg-card), var(--wine));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .horoscope-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .horoscope-sign {
+    font-size: 40px;
+    text-align: center;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .horoscope-name {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold-light);
+    text-align: center;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+  .horoscope-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    font-style: italic;
+  }
+  .locked-overlay {
+    background: rgba(26,15,10,0.85);
+    backdrop-filter: blur(4px);
+    border-radius: 14px;
+    padding: 32px 24px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .locked-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+  .locked-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--cream-dim);
+    font-style: italic;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- STARS -->
+<div class="stars" id="stars"></div>
+
+<!-- SCREEN 1: LANDING -->
+<div class="screen active" id="screen-landing">
+  <div class="logo-area">
+    <span class="logo-symbol">🌹</span>
+    <div class="logo-title">AMOR REVELADO</div>
+    <div class="logo-sub">Onde o coração encontra o mistério</div>
+    <div class="divider"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">BEM-VINDO</div>
+    <div class="card-subtitle">O universo tem respostas para o seu coração</div>
+    <button class="btn-primary" onclick="showScreen('screen-register')">INICIAR MINHA JORNADA</button>
+    <button class="btn-secondary" onclick="showScreen('screen-login')">JÁ TENHO UMA CONTA</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: REGISTER -->
+<div class="screen" id="screen-register">
+  <div class="logo-area" style="margin-bottom:20px">
+    <span class="logo-symbol" style="font-size:36px">🌹</span>
+    <div class="logo-title" style="font-size:22px">AMOR REVELADO</div>
+  </div>
+  <div class="card">
+    <div class="card-title">CRIAR CONTA</div>
+    <div class="card-subtitle">Para que os guias possam te conhecer</div>
+
+    <div class="input-group">
+      <label class="input-label">Seu nome completo</label>
+      <input class="input-field" type="text" placeholder="Como você se chama?" id="reg-name">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Data de nascimento</label>
+      <input class="input-field" type="date" id="reg-birth">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Cidade de nascimento</label>
+      <input class="input-field" type="text" placeholder="Onde você nasceu?" id="reg-city">
+    </div>
+    <div class="input-group">
+      <label class="input-label">E-mail</label>
+      <input class="input-field" type="email" placeholder="seu@email.com" id="reg-email">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Senha</label>
+      <input class="input-field" type="password" placeholder="Crie uma senha" id="reg-pass">
+    </div>
+
+    <div class="input-group" style="margin-top:4px">
+      <div style="background:rgba(201,146,42,0.06);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:6px">✨</div>
+        <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light);letter-spacing:2px;margin-bottom:4px">ZARA</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--cream-dim)">Seu oráculo espiritual pessoal</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="goToPlans()">CONTINUAR</button>
+    <button class="btn-ghost" onclick="showScreen('screen-landing')">← Voltar</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: PLANS -->
+<div class="screen" id="screen-plans">
+  <div style="width:100%;max-width:420px;margin-bottom:24px;text-align:center;position:relative;z-index:1">
+    <div class="logo-title" style="font-size:20px;margin-bottom:4px">ESCOLHA SEU PLANO</div>
+    <div class="logo-sub">Comece sua jornada espiritual</div>
+    <div class="divider"></div>
+  </div>
+  <div class="plans-grid">
+    <div class="plan-card" onclick="selectPlan('ambar')">
+      <span class="plan-icon">🟠</span>
+      <div class="plan-name">ÂMBAR</div>
+      <div class="plan-price">R$19,90 <span>/mês</span></div>
+      <ul class="plan-features">
+        <li>1 consulta por semana</li>
+        <li>3 perguntas por consulta</li>
+        <li>Perguntas pré-definidas</li>
+        <li>Horóscopo semanal</li>
+      </ul>
+    </div>
+    <div class="plan-card featured" onclick="selectPlan('rubi')">
+      <div class="plan-badge">POPULAR</div>
+      <span class="plan-icon">❤️</span>
+      <div class="plan-name">RUBI</div>
+      <div class="plan-price">R$39,90 <span>/mês</span></div>
+      <ul class="plan-features">
+        <li>3 consultas por semana</li>
+        <li>5 perguntas por consulta</li>
+        <li>Perguntas pré-definidas</li>
+        <li>Horóscopo diário</li>
+      </ul>
+    </div>
+    <div class="plan-card" onclick="selectPlan('diamante')">
+      <span class="plan-icon">💎</span>
+      <div class="plan-name">DIAMANTE</div>
+      <div class="plan-price">R$69,90 <span>/mês</span></div>
+      <ul class="plan-features">
+        <li>Consultas ilimitadas</li>
+        <li>Pergunta livre</li>
+        <li>Horóscopo diário personalizado</li>
+        <li>Mapa do Casal exclusivo</li>
+        <li>Desconto em rituais</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4: DASHBOARD -->
+<div class="screen dashboard" id="screen-dashboard">
+  <div class="dash-header">
+    <div class="dash-logo">AMOR REVELADO</div>
+    <div class="dash-user">
+      <span id="dash-username" style="font-size:12px"></span>
+      <div class="dash-avatar">🌙</div>
+    </div>
+  </div>
+
+  <div class="dash-content pb-nav">
+    <div class="greeting">
+      <div class="greeting-small">✦ Bem-vinda de volta</div>
+      <div class="greeting-name" id="dash-greeting">Carregando...</div>
+      <div class="greeting-sign" id="dash-sign"></div>
+    </div>
+
+    <div class="guide-bubble">
+      <div class="guide-bubble-header">
+        <div class="guide-avatar" id="guide-avatar">✨</div>
+        <div>
+          <div class="guide-bubble-name" id="guide-bubble-name">ZARA</div>
+          <div class="guide-bubble-role">Seu oráculo espiritual</div>
+        </div>
+      </div>
+      <div class="guide-message" id="guide-message">
+        "As estrelas se movem em seu favor hoje. O universo conspira para revelar o que o coração tanto busca..."
+      </div>
+    </div>
+
+    <div class="section-title">✦ O QUE DESEJA EXPLORAR</div>
+    <div class="action-grid">
+      <div class="action-card" onclick="showScreen('screen-consult')">
+        <span class="action-icon">🃏</span>
+        <div class="action-name">TARÔ</div>
+        <div class="action-desc">Consulta espiritual</div>
+      </div>
+      <div class="action-card" onclick="showScreen('screen-horoscope')">
+        <span class="action-icon">⭐</span>
+        <div class="action-name">HORÓSCOPO</div>
+        <div class="action-desc">Seu dia nos astros</div>
+      </div>
+      <div class="action-card" onclick="showScreen('screen-mapa')">
+        <span class="action-icon">💞</span>
+        <div class="action-name">MAPA DO CASAL</div>
+        <div class="action-desc">Compatibilidade</div>
+      </div>
+      <div class="action-card" onclick="showScreen('screen-rituals')">
+        <span class="action-icon">🕯️</span>
+        <div class="action-name">RITUAIS</div>
+        <div class="action-desc">Trabalhos espirituais</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="showScreen('screen-dashboard')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">INÍCIO</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-consult')">
+      <span class="nav-icon">🃏</span>
+      <span class="nav-label">TARÔ</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-rituals')">
+      <span class="nav-icon">🕯️</span>
+      <span class="nav-label">RITUAIS</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-profile')">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label">PERFIL</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 5: CONSULTA -->
+<div class="screen consult-screen" id="screen-consult">
+  <div class="consult-header">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">←</button>
+    <div class="consult-title">CONSULTA DE TARÔ</div>
+  </div>
+  <div class="consult-content pb-nav">
+
+    <!-- AVISO DE LIMITE -->
+    <div id="consult-limit-msg" style="display:none;background:rgba(201,146,42,0.08);border:1px solid var(--border-bright);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px">
+      <div style="font-size:28px;margin-bottom:8px">🔒</div>
+      <div style="font-family:'Cinzel',serif;font-size:13px;color:var(--gold-light);letter-spacing:2px;margin-bottom:8px">LIMITE ATINGIDO</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream-dim);font-style:italic;margin-bottom:16px" id="consult-limit-text"></div>
+      <button class="btn-primary" onclick="showScreen('screen-plans')">EVOLUIR MEU PLANO</button>
+    </div>
+
+    <!-- CONTEÚDO NORMAL DE CONSULTA -->
+    <div id="consult-main">
+      <div class="category-tabs">
+        <div class="tab active" onclick="setCategory(this,'relacionamento')">Relacionamento</div>
+        <div class="tab" onclick="setCategory(this,'interesse')">Interesse Amoroso</div>
+        <div class="tab" onclick="setCategory(this,'termino')">Término e Cura</div>
+        <div class="tab" onclick="setCategory(this,'destino')">Amor e Destino</div>
+        <div class="tab" onclick="setCategory(this,'rival')">Rival e Interferência</div>
+      </div>
+
+      <!-- CAMPO PERGUNTA LIVRE (só Diamante) -->
+      <div id="free-question-area" style="display:none;margin-bottom:20px">
+        <div class="section-title">✦ SUA PERGUNTA LIVRE</div>
+        <textarea id="free-question-input"
+          placeholder="Escreva sua pergunta para os guias..."
+          style="width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-family:'Cormorant Garamond',serif;font-size:16px;resize:none;height:100px;outline:none;line-height:1.6;transition:border-color 0.3s"
+          onfocus="this.style.borderColor='var(--gold)'"
+          onblur="this.style.borderColor='var(--border)'"
+        ></textarea>
+        <button class="btn-primary" style="margin-top:10px" onclick="generateFreeReading()">CONSULTAR OS GUIAS</button>
+        <div style="text-align:center;margin:16px 0;color:var(--text-dim);font-size:13px">— ou escolha uma pergunta abaixo —</div>
+      </div>
+
+      <div class="section-title">✦ ESCOLHA SUA PERGUNTA</div>
+      <div class="question-list" id="question-list"></div>
+
+      <div class="reading-area" id="reading-area">
+        <div class="reading-cards" id="reading-cards"></div>
+        <div class="reading-text" id="reading-text"></div>
+        <div class="reading-signature" id="reading-signature"></div>
+      </div>
+
+      <div class="ritual-cta" id="ritual-cta">
+        <div class="ritual-cta-title">✦ OS GUIAS RECOMENDAM</div>
+        <div class="ritual-cta-text" id="ritual-cta-text"></div>
+        <button class="btn-whatsapp" onclick="openWhatsApp()">
+          💬 Falar com um Especialista
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showScreen('screen-dashboard')">
+      <span class="nav-icon">🏠</span><span class="nav-label">INÍCIO</span>
+    </div>
+    <div class="nav-item active">
+      <span class="nav-icon">🃏</span><span class="nav-label">TARÔ</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-rituals')">
+      <span class="nav-icon">🕯️</span><span class="nav-label">RITUAIS</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-profile')">
+      <span class="nav-icon">👤</span><span class="nav-label">PERFIL</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 6: RITUAIS -->
+<div class="screen" id="screen-rituals">
+  <div class="consult-header">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">←</button>
+    <div class="consult-title">RITUAIS E TRABALHOS</div>
+  </div>
+  <div class="consult-content pb-nav">
+    <div class="guide-bubble" style="margin-bottom:20px">
+      <div class="guide-message" style="font-size:15px">
+        "Cada ritual é uma conversa com o sagrado. Escolha aquele que fala ao seu coração."
+      </div>
+    </div>
+
+    <div class="section-title">✦ RITUAIS LEVES</div>
+    <div class="ritual-item">
+      <span class="ritual-emoji">🍯</span>
+      <div class="ritual-info">
+        <div class="ritual-name">SIMPATIA DO MEL</div>
+        <div class="ritual-desc">Para aproximar e adoçar o coração amado</div>
+      </div>
+      <div class="ritual-price">R$79</div>
+    </div>
+    <div class="ritual-item">
+      <span class="ritual-emoji">🌸</span>
+      <div class="ritual-info">
+        <div class="ritual-name">BANHO DE ATRAÇÃO</div>
+        <div class="ritual-desc">Para despertar o desejo e a admiração</div>
+      </div>
+      <div class="ritual-price">R$79</div>
+    </div>
+    <div class="ritual-item">
+      <span class="ritual-emoji">🌿</span>
+      <div class="ritual-info">
+        <div class="ritual-name">DEFUMAÇÃO DE ABERTURA</div>
+        <div class="ritual-desc">Para limpar energias negativas e abrir caminhos</div>
+      </div>
+      <div class="ritual-price">R$89</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px">✦ RITUAIS MÉDIOS</div>
+    <div class="ritual-item">
+      <span class="ritual-emoji">🕯️</span>
+      <div class="ritual-info">
+        <div class="ritual-name">ADOÇAMENTO AMOROSO</div>
+        <div class="ritual-desc">Para suavizar conflitos e restaurar a harmonia</div>
+      </div>
+      <div class="ritual-price">R$129</div>
+    </div>
+    <div class="ritual-item">
+      <span class="ritual-emoji">🔮</span>
+      <div class="ritual-info">
+        <div class="ritual-name">AMARRAÇÃO DE PENSAMENTO</div>
+        <div class="ritual-desc">Para fixar sua presença na mente do amado</div>
+      </div>
+      <div class="ritual-price">R$129</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px">✦ TRABALHOS FORTES</div>
+    <div class="ritual-item" onclick="openWhatsApp()">
+      <span class="ritual-emoji">⚔️</span>
+      <div class="ritual-info">
+        <div class="ritual-name">AFASTAMENTO DE RIVAL</div>
+        <div class="ritual-desc">Para remover quem interfere no seu amor</div>
+      </div>
+      <div class="ritual-price whatsapp-price">VIA<br>WHATSAPP</div>
+    </div>
+    <div class="ritual-item" onclick="openWhatsApp()">
+      <span class="ritual-emoji">🌑</span>
+      <div class="ritual-info">
+        <div class="ritual-name">DESCARREGO AMOROSO</div>
+        <div class="ritual-desc">Para remover bloqueios e feitiços</div>
+      </div>
+      <div class="ritual-price whatsapp-price">VIA<br>WHATSAPP</div>
+    </div>
+    <div class="ritual-item" onclick="openWhatsApp()">
+      <span class="ritual-emoji">🔗</span>
+      <div class="ritual-info">
+        <div class="ritual-name">AMARRAÇÃO FORTE</div>
+        <div class="ritual-desc">Para reconquistar ou unir definitivamente</div>
+      </div>
+      <div class="ritual-price whatsapp-price">VIA<br>WHATSAPP</div>
+    </div>
+    <div class="ritual-item" onclick="openWhatsApp()">
+      <span class="ritual-emoji">💔</span>
+      <div class="ritual-info">
+        <div class="ritual-name">TRABALHO VOLTA DO EX</div>
+        <div class="ritual-desc">Para reconexão urgente com amor perdido</div>
+      </div>
+      <div class="ritual-price whatsapp-price">VIA<br>WHATSAPP</div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showScreen('screen-dashboard')">
+      <span class="nav-icon">🏠</span><span class="nav-label">INÍCIO</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-consult')">
+      <span class="nav-icon">🃏</span><span class="nav-label">TARÔ</span>
+    </div>
+    <div class="nav-item active">
+      <span class="nav-icon">🕯️</span><span class="nav-label">RITUAIS</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-profile')">
+      <span class="nav-icon">👤</span><span class="nav-label">PERFIL</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 7: HORÓSCOPO -->
+<div class="screen" id="screen-horoscope">
+  <div class="consult-header">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">←</button>
+    <div class="consult-title">HORÓSCOPO DO AMOR</div>
+  </div>
+  <div class="consult-content pb-nav">
+
+    <!-- SIGN HEADER -->
+    <div style="text-align:center;margin-bottom:20px">
+      <span id="horo-sign-emoji" style="font-size:40px;display:block;margin-bottom:4px">⭐</span>
+      <div id="horo-sign-name" style="font-family:'Cinzel',serif;font-size:16px;color:var(--gold-light);letter-spacing:3px"></div>
+    </div>
+
+    <!-- MENSAL (Âmbar+) -->
+    <div id="horo-mensal-block">
+      <div class="section-title">✦ HORÓSCOPO DO MÊS</div>
+      <div class="horoscope-card" style="margin-bottom:16px">
+        <div class="horoscope-text" id="horo-mensal-text"></div>
+      </div>
+    </div>
+
+    <!-- SEMANAL (Rubi+) -->
+    <div id="horo-semanal-block">
+      <div class="section-title">✦ HORÓSCOPO DA SEMANA</div>
+      <div class="horoscope-card" style="margin-bottom:16px">
+        <div class="horoscope-text" id="horo-semanal-text"></div>
+      </div>
+    </div>
+
+    <!-- DIÁRIO (Diamante) -->
+    <div id="horo-diario-block">
+      <div class="section-title">✦ HORÓSCOPO DE HOJE</div>
+      <div class="horoscope-card" style="margin-bottom:16px">
+        <div class="horoscope-text" id="horo-diario-text"></div>
+      </div>
+    </div>
+
+    <!-- LOCKED SEMANAL -->
+    <div id="horo-lock-semanal" class="locked-overlay" style="margin-bottom:16px;display:none">
+      <span class="locked-icon">📅</span>
+      <div class="locked-text">"O horóscopo semanal do amor está disponível a partir do plano Rubi."</div>
+      <button class="btn-primary" onclick="showScreen('screen-plans')">EVOLUIR PLANO</button>
+    </div>
+
+    <!-- LOCKED DIÁRIO -->
+    <div id="horo-lock-diario" class="locked-overlay" style="display:none">
+      <span class="locked-icon">🌅</span>
+      <div class="locked-text">"O horóscopo diário personalizado é exclusivo do plano Diamante."</div>
+      <button class="btn-primary" onclick="showScreen('screen-plans')">EVOLUIR PLANO</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCREEN 8: MAPA DO CASAL -->
+<div class="screen" id="screen-mapa">
+  <div class="consult-header">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">←</button>
+    <div class="consult-title">MAPA DO CASAL</div>
+  </div>
+  <div class="consult-content pb-nav">
+    <div id="mapa-locked">
+      <div class="guide-bubble">
+        <div class="guide-message">"Dois destinos, uma só energia. O Mapa do Casal revela a compatibilidade espiritual e amorosa entre duas almas."</div>
+      </div>
+      <div class="locked-overlay" style="margin-top:0">
+        <span class="locked-icon">💞</span>
+        <div class="locked-text">"O Mapa do Casal é um privilégio exclusivo do plano Diamante. Uma leitura profunda que une tarô, astrologia e sabedoria espiritual."</div>
+        <button class="btn-primary" onclick="showScreen('screen-plans')">DESBLOQUEAR AGORA</button>
+      </div>
+    </div>
+    <div id="mapa-content" style="display:none">
+      <div class="guide-bubble" style="margin-bottom:20px">
+        <div class="guide-message">"Insira os dados de vocês dois. Os guias irão revelar a energia que une — ou separa — essas duas almas."</div>
+      </div>
+      <div class="section-title">✦ SEUS DADOS</div>
+      <div class="input-group">
+        <label class="input-label">Seu nome</label>
+        <input class="input-field" type="text" id="mapa-nome1" placeholder="Seu nome">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Sua data de nascimento</label>
+        <input class="input-field" type="date" id="mapa-nasc1">
+      </div>
+      <div class="section-title" style="margin-top:8px">✦ DADOS DO(A) PARCEIRO(A)</div>
+      <div class="input-group">
+        <label class="input-label">Nome do(a) parceiro(a)</label>
+        <input class="input-field" type="text" id="mapa-nome2" placeholder="Nome da outra pessoa">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Data de nascimento</label>
+        <input class="input-field" type="date" id="mapa-nasc2">
+      </div>
+      <button class="btn-primary" style="margin-top:8px" onclick="gerarMapaCasal()">REVELAR O MAPA DO CASAL</button>
+      <div id="mapa-resultado" style="margin-top:20px;display:none">
+        <!-- Cabeçalho numerológico -->
+        <div class="horoscope-card" style="text-align:center;margin-bottom:12px">
+          <div id="mapa-nomes" style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light);letter-spacing:2px;margin-bottom:8px"></div>
+          <div id="mapa-numeros" style="font-size:13px;color:var(--text-dim);margin-bottom:12px"></div>
+          <div id="mapa-uniao" style="font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold-light)"></div>
+          <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:2px;margin-top:4px">NÚMERO DA UNIÃO</div>
+        </div>
+        <!-- Camada 1 -->
+        <div class="section-title">✦ ENERGIA DA UNIÃO</div>
+        <div class="horoscope-card" style="margin-bottom:12px">
+          <div class="horoscope-text" id="mapa-energia"></div>
+        </div>
+        <!-- Camada 2 -->
+        <div class="section-title">✦ DESAFIO DO CASAL</div>
+        <div class="horoscope-card" style="margin-bottom:12px">
+          <div class="horoscope-text" id="mapa-desafio"></div>
+        </div>
+        <!-- Camada 3 -->
+        <div class="section-title">✦ POTENCIAL ESPIRITUAL</div>
+        <div class="horoscope-card" style="margin-bottom:20px">
+          <div class="horoscope-text" id="mapa-potencial"></div>
+        </div>
+        <div id="mapa-assinatura" style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-dim);letter-spacing:2px;text-align:right;margin-bottom:20px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 9: LOGIN -->
+<div class="screen" id="screen-login">
+  <div class="logo-area" style="margin-bottom:20px">
+    <span class="logo-symbol" style="font-size:36px">🌹</span>
+    <div class="logo-title" style="font-size:22px">AMOR REVELADO</div>
+  </div>
+  <div class="card">
+    <div class="card-title">ENTRAR</div>
+    <div class="card-subtitle">Os guias aguardam seu retorno</div>
+    <div class="input-group">
+      <label class="input-label">E-mail</label>
+      <input class="input-field" type="email" placeholder="seu@email.com">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Senha</label>
+      <input class="input-field" type="password" placeholder="Sua senha">
+    </div>
+    <button class="btn-primary" onclick="loginDemo()">ENTRAR</button>
+    <button class="btn-ghost" onclick="showScreen('screen-landing')">← Voltar</button>
+  </div>
+</div>
+
+<!-- SCREEN 10: PERFIL -->
+<div class="screen" id="screen-profile">
+  <div class="consult-header">
+    <button class="back-btn" onclick="showScreen('screen-dashboard')">←</button>
+    <div class="consult-title">MEU PERFIL</div>
+  </div>
+  <div class="consult-content pb-nav">
+    <div class="guide-bubble" style="text-align:center">
+      <div style="font-size:48px;margin-bottom:8px" id="profile-guide-emoji">🌙</div>
+      <div style="font-family:'Cinzel',serif;font-size:16px;color:var(--gold-light)" id="profile-name-display">...</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-top:4px" id="profile-sign-display">...</div>
+      <div style="font-size:12px;color:var(--gold-dim);margin-top:8px;font-family:'Cinzel',serif;letter-spacing:2px" id="profile-plan-display">PLANO ÂMBAR</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px">✦ MEUS DADOS</div>
+    <div class="ritual-item" style="cursor:default">
+      <span class="ritual-emoji">📅</span>
+      <div class="ritual-info">
+        <div class="ritual-name">DATA DE NASCIMENTO</div>
+        <div class="ritual-desc" id="profile-birth">--</div>
+      </div>
+    </div>
+    <div class="ritual-item" style="cursor:default">
+      <span class="ritual-emoji">📍</span>
+      <div class="ritual-info">
+        <div class="ritual-name">CIDADE DE NASCIMENTO</div>
+        <div class="ritual-desc" id="profile-city">--</div>
+      </div>
+    </div>
+    <div class="ritual-item" style="cursor:default">
+      <span class="ritual-emoji">✉️</span>
+      <div class="ritual-info">
+        <div class="ritual-name">E-MAIL</div>
+        <div class="ritual-desc" id="profile-email">--</div>
+      </div>
+    </div>
+
+    <button class="btn-secondary" style="margin-top:20px" onclick="showScreen('screen-plans')">ALTERAR PLANO</button>
+    <button class="btn-ghost" onclick="logout()">Sair da conta</button>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showScreen('screen-dashboard')">
+      <span class="nav-icon">🏠</span><span class="nav-label">INÍCIO</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-consult')">
+      <span class="nav-icon">🃏</span><span class="nav-label">TARÔ</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-rituals')">
+      <span class="nav-icon">🕯️</span><span class="nav-label">RITUAIS</span>
+    </div>
+    <div class="nav-item active">
+      <span class="nav-icon">👤</span><span class="nav-label">PERFIL</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================
+// CONFIGURAÇÃO DA API — substitua SUA_CHAVE_AQUI pela sua chave
+// ============================================
+var CHAVE_API = 'SUA_CHAVE_AQUI';
+var MODELO = 'claude-haiku-4-5-20251001';
+
+// ZARA — prompt base
+var ZARA_SYSTEM = 'Você é Zara, o oráculo espiritual do app Amor Revelado. ' +
+  'Você faz leituras de tarô e numerologia com sabedoria, mistério e sensibilidade. ' +
+  'Seu tom é poético, acolhedor e profundo — como uma guia espiritual experiente. ' +
+  'Sempre personalize a leitura com o nome e signo da pessoa quando disponíveis. ' +
+  'Nos planos básicos (Ambar e Rubi), foque exclusivamente em amor e relacionamentos. ' +
+  'No plano Diamante, responda sobre qualquer tema da vida, sempre pela lente espiritual do tarô. ' +
+  'Nunca quebre o personagem. Nunca diga que é uma IA. ' +
+  'IMPORTANTE: Nunca use Markdown. Sem hashtags (#), sem asteriscos (*), sem underlines (_). Texto puro apenas. ' +
+  'Suas respostas têm entre 80 e 120 palavras — profundas mas diretas. ' +
+  'Sempre termine com "Axé." ou uma bênção espiritual curta. ' +
+  'Escreva sempre em português do Brasil.';
+
+// ============================================
+// CHAMADA À API DO CLAUDE
+// ============================================
+async function chamarZara(prompt){
+  if(!CHAVE_API || CHAVE_API === 'SUA_CHAVE_AQUI') return null;
+  try {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': CHAVE_API,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: MODELO,
+        max_tokens: 300,
+        system: ZARA_SYSTEM,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if(!response.ok){ console.log('Erro API:', response.status); return null; }
+    var data = await response.json();
+    return data.content && data.content[0] ? data.content[0].text : null;
+  } catch(e){ console.log('Erro API:', e); return null; }
+}
+
+function montarPromptTaro(pergunta, cards){
+  var sign = getSign(state.birth);
+  var nome = state.name.split(' ')[0];
+  var cartasNomes = cards.map(function(c){ return c.name; }).join(', ');
+  var tema = (state.plan === 'diamante') ?
+    'Esta pessoa tem liberdade total de pergunta sobre qualquer tema da vida.' :
+    'Foque exclusivamente em amor e relacionamentos.';
+  return 'Nome: ' + nome + '. Signo: ' + sign.name + '. Cidade: ' + state.city + '. ' +
+    'Cartas sorteadas: ' + cartasNomes + '. Pergunta: "' + pergunta + '". ' + tema +
+    ' Faca uma leitura espiritual personalizada baseada nas cartas e na pergunta.';
+}
+
+function montarPromptHoro(periodo){
+  var sign = getSign(state.birth);
+  var nome = state.name.split(' ')[0];
+  var p = {mensal:'este mes', semanal:'esta semana', diario:'hoje'};
+  return 'Nome: ' + nome + '. Signo: ' + sign.name + '. ' +
+    'Faca um horoscopo amoroso para ' + p[periodo] + '. Foque em amor e energia afetiva.';
+}
+
+function montarPromptMapa(nome1, sign1, n1, nome2, sign2, n2, uniao){
+  return 'Casal: ' + nome1 + ' (' + sign1.name + ', Numero de Vida ' + n1 + ') e ' +
+    nome2 + ' (' + sign2.name + ', Numero de Vida ' + n2 + '). Numero da Uniao: ' + uniao + '. ' +
+    'Faca uma leitura numerologica do casal em tres partes. ' +
+    'Separe assim exatamente: *Energia da Uniao* [texto]. *Desafio do Casal* [texto]. *Potencial Espiritual* [texto].';
+}
+
+function parsearMapaResposta(texto){
+  var energia = '', desafio = '', potencial = '';
+  var m1 = texto.match(/\*Energia da Uni[aã]o\*\s*([\s\S]*?)(?=\*Desafio|\*Potencial|$)/i);
+  var m2 = texto.match(/\*Desafio do Casal\*\s*([\s\S]*?)(?=\*Energia|\*Potencial|$)/i);
+  var m3 = texto.match(/\*Potencial Espiritual\*\s*([\s\S]*?)(?=\*Energia|\*Desafio|$)/i);
+  energia  = m1 ? m1[1].trim() : texto;
+  desafio  = m2 ? m2[1].trim() : '';
+  potencial= m3 ? m3[1].trim() : '';
+  return { energia: energia, desafio: desafio, potencial: potencial };
+}
+
+// ============================================
+var state = {
+  name: '', birth: '', city: '', email: '', guide: 'lua', plan: 'ambar',
+  sign: '', consultCount: 0, lastRitualSuggestion: -1, consultHistory: []
+};
+
+// STARS
+const starsEl = document.getElementById('stars');
+for(let i=0;i<60;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  s.style.left=Math.random()*100+'%';
+  s.style.top=Math.random()*100+'%';
+  s.style.setProperty('--d',(2+Math.random()*4)+'s');
+  s.style.setProperty('--delay',(Math.random()*3)+'s');
+  starsEl.appendChild(s);
+}
+
+// PLANOS — limites e permissões
+const planConfig = {
+  ambar:    { weeklyLimit: 1, freeQuestion: false, horoMensal: true,  horoSemanal: false, horoDiario: false, mapa: false },
+  rubi:     { weeklyLimit: 3, freeQuestion: false, horoMensal: true,  horoSemanal: true,  horoDiario: false, mapa: false },
+  diamante: { weeklyLimit: Infinity, freeQuestion: true, horoMensal: true, horoSemanal: true, horoDiario: true, mapa: true }
+};
+
+// Retorna consultas feitas nesta semana
+function consultasEssaSemana(){
+  try {
+    var agora = new Date();
+    var inicioSemana = new Date(agora);
+    inicioSemana.setHours(0,0,0,0);
+    inicioSemana.setDate(agora.getDate() - agora.getDay());
+    var hist = state.consultHistory || [];
+    var count = 0;
+    for(var i=0;i<hist.length;i++){
+      if(new Date(hist[i]) >= inicioSemana) count++;
+    }
+    return count;
+  } catch(e){ return 0; }
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='screen-consult') initConsultScreen();
+  if(id==='screen-horoscope') initHoroscopeScreen();
+  if(id==='screen-mapa') initMapaScreen();
+}
+
+function initConsultScreen(){
+  const cfg = planConfig[state.plan] || planConfig.ambar;
+  const usadas = consultasEssaSemana();
+  const limitMsg = document.getElementById('consult-limit-msg');
+  const consultMain = document.getElementById('consult-main');
+  const freeArea = document.getElementById('free-question-area');
+
+  // Verifica limite semanal
+  if(usadas >= cfg.weeklyLimit){
+    const nomes = {ambar:'Âmbar',rubi:'Rubi',diamante:'Diamante'};
+    const limites = {ambar:'1 consulta',rubi:'3 consultas',diamante:'ilimitadas'};
+    limitMsg.style.display = 'block';
+    consultMain.style.display = 'none';
+    document.getElementById('consult-limit-text').textContent =
+      `Você atingiu o limite de ${limites[state.plan]} por semana do plano ${nomes[state.plan]}. Evolua seu plano para continuar consultando os guias.`;
+    return;
+  }
+
+  limitMsg.style.display = 'none';
+  consultMain.style.display = 'block';
+
+  // Pergunta livre só no Diamante
+  freeArea.style.display = cfg.freeQuestion ? 'block' : 'none';
+
+  loadQuestions('relacionamento');
+  document.getElementById('reading-area').classList.remove('visible');
+  document.getElementById('ritual-cta').classList.remove('visible');
+}
+
+function initHoroscopeScreen(){
+  var cfg = planConfig[state.plan] || planConfig.ambar;
+  var sign = getSign(state.birth);
+  var signIdx = getSignIndex(state.birth);
+  var now = new Date();
+  var mes = now.getMonth();
+  var semana = getWeekNumber(now);
+  var dia = now.getDate();
+
+  document.getElementById('horo-sign-emoji').textContent = sign.emoji;
+  document.getElementById('horo-sign-name').textContent = sign.name.toUpperCase();
+
+  // MENSAL — sempre visível
+  document.getElementById('horo-mensal-block').style.display = 'block';
+  var elMensal = document.getElementById('horo-mensal-text');
+  elMensal.textContent = getHoroText('mensal', signIdx, mes);
+  chamarZara(montarPromptHoro('mensal')).then(function(r){
+    if(r && elMensal) elMensal.textContent = r;
+  });
+
+  // SEMANAL
+  if(cfg.horoSemanal){
+    document.getElementById('horo-semanal-block').style.display = 'block';
+    document.getElementById('horo-lock-semanal').style.display = 'none';
+    var elSemanal = document.getElementById('horo-semanal-text');
+    elSemanal.textContent = getHoroText('semanal', signIdx, semana);
+    chamarZara(montarPromptHoro('semanal')).then(function(r){
+      if(r && elSemanal) elSemanal.textContent = r;
+    });
+  } else {
+    document.getElementById('horo-semanal-block').style.display = 'none';
+    document.getElementById('horo-lock-semanal').style.display = 'block';
+  }
+
+  // DIÁRIO
+  if(cfg.horoDiario){
+    document.getElementById('horo-diario-block').style.display = 'block';
+    document.getElementById('horo-lock-diario').style.display = 'none';
+    var elDiario = document.getElementById('horo-diario-text');
+    elDiario.textContent = getHoroText('diario', signIdx, dia);
+    chamarZara(montarPromptHoro('diario')).then(function(r){
+      if(r && elDiario) elDiario.textContent = r;
+    });
+  } else {
+    document.getElementById('horo-diario-block').style.display = 'none';
+    document.getElementById('horo-lock-diario').style.display = 'block';
+  }
+}
+
+function getWeekNumber(d){
+  var onejan = new Date(d.getFullYear(),0,1);
+  return Math.ceil((((d-onejan)/86400000)+onejan.getDay()+1)/7);
+}
+
+function getSignIndex(dateStr){
+  if(!dateStr) return 0;
+  var parts = dateStr.split('-');
+  var m = parseInt(parts[1],10);
+  var day = parseInt(parts[2],10);
+  var signs=[
+    {m:1,d:19},{m:2,d:18},{m:3,d:20},{m:4,d:19},
+    {m:5,d:20},{m:6,d:20},{m:7,d:22},{m:8,d:22},
+    {m:9,d:22},{m:10,d:22},{m:11,d:21},{m:12,d:21},{m:12,d:31}
+  ];
+  for(var i=0;i<signs.length;i++){
+    if(m<signs[i].m||(m===signs[i].m&&day<=signs[i].d)) return i;
+  }
+  return 0;
+}
+
+// Textos de horóscopo — determinísticos por signo + período
+var horoTextos = {
+  mensal: [
+    'Este mês, Vênus favorece sua renovação afetiva. Velhos padrões serão dissolvidos para dar lugar a conexões mais genuínas. O amor que chega agora tem raízes mais profundas do que os anteriores.',
+    'Um ciclo de clareza amorosa se abre para você. O que estava nebuloso nos últimos meses finalmente encontra forma e resposta. Permita-se ser visto com toda a sua verdade.',
+    'As águas do amor fluem abundantes neste mês. Sua sensibilidade está em alta — use-a para se aproximar de quem importa e para perceber quem realmente vale sua energia.',
+    'Marte impulsiona sua coragem afetiva. Este é o mês de dar o passo que você vem adiando. A hesitação custa mais do que o risco.',
+    'A estabilidade que você buscou no amor começa a se materializar. Relacionamentos sólidos se fortalecem; os superficiais naturalmente se afastam. Confie no processo.',
+    'Sua mente e seu coração entram em harmonia neste mês. Conversas importantes acontecem e revelam o que estava escondido. A comunicação é sua maior aliada agora.',
+    'O amor chega embalado em equilíbrio e beleza. Vênus, seu regente, ilumina os caminhos do coração. Relações que estavam desgastadas encontram nova leveza.',
+    'Uma transformação profunda no campo afetivo está em curso. O que não serve mais será liberado — e isso é um presente, não uma perda. O novo amor exige espaço.',
+    'Expansão e otimismo chegam ao seu campo amoroso. Uma oportunidade inesperada de conexão surge no horizonte. Esteja aberto para o que vier de forma diferente do planejado.',
+    'Saturno pede maturidade nas relações. É hora de construir, não apenas sentir. O amor que você deseja requer compromisso — e você está pronto para isso.',
+    'O amor coletivo e a individualidade encontram equilíbrio. Você atrai pessoas que te respeitam pelo que é. Conexões autênticas chegam quando você para de se moldar ao outro.',
+    'Sua intuição amorosa está no pico. Confie nos sinais que o universo envia — eles são mais claros do que parecem. Um sonho ou pressentimento pode revelar muito neste mês.',
+  ],
+  semanal: [
+    'Esta semana pede que você abra o coração para o inesperado. Uma conversa aparentemente simples pode revelar sentimentos profundos. Não subestime os pequenos momentos.',
+    'A energia desta semana favorece a reconciliação e o diálogo. Se há algo pendente entre você e alguém importante, o momento de resolver é agora.',
+    'Fique atento aos sonhos e intuições desta semana — eles carregam mensagens sobre seu campo amoroso. O invisível está se comunicando.',
+    'Esta semana traz um teste de paciência no amor. Não tome decisões impulsivas. O que parece um retrocesso é, na verdade, uma reorganização necessária.',
+    'A semana favorece quem age com intenção. Se há algo que você deseja no campo amoroso, dê o primeiro passo — o universo está cooperando.',
+    'Uma energia de atração magnética envolve você esta semana. Pessoas ao seu redor percebem sua presença de forma diferente. Use essa energia com consciência.',
+    'Harmonia e equilíbrio marcam a semana no amor. É um bom momento para aprofundar vínculos existentes e para deixar ir o que não tem futuro.',
+    'Uma revelação sobre um relacionamento pode surgir esta semana. Esteja preparado para a verdade — ela liberta, mesmo quando dói.',
+    'A sorte está ao seu lado no campo afetivo esta semana. Um encontro ou uma mensagem inesperada pode mudar a direção do seu coração.',
+    'Esta semana pede introspecção amorosa. Antes de buscar no outro, verifique o que está sentindo de verdade. A clareza interna atrai a clareza externa.',
+    'Conexões intelectuais e afetivas se misturam esta semana. Uma amizade pode se aprofundar; uma conversa pode revelar mais do que as palavras dizem.',
+    'A semana traz ondas de emoção no campo amoroso. Permita-se sentir sem se afogar. Sua sensibilidade é um dom — não um fardo.',
+  ],
+  diario: [
+    'Hoje, Vênus sorri para você. Um gesto simples pode abrir uma porta que parecia fechada. Esteja presente.',
+    'A lua favorece conversas honestas hoje. Diga o que sente — o momento está preparado para receber suas palavras.',
+    'Hoje é dia de cuidar de si para atrair o amor que merece. Sua energia interna define o que você magnetiza.',
+    'Um sinal do universo chegará hoje no campo amoroso. Pode ser sutil — mas você vai reconhecer.',
+    'Hoje a energia está alta para reaproximações. Se há alguém em seus pensamentos, não é coincidência.',
+    'Resguarde sua energia hoje. Nem toda conexão merece seu entusiasmo — escolha com cuidado.',
+    'Hoje é um dia de abertura e fluxo. O amor circula livremente ao seu redor. Permita-se receber.',
+    'Uma situação amorosa pendente pede resolução hoje. O universo está sinalizando que é hora de agir.',
+    'Hoje, confie na sua intuição acima de tudo. Seu coração sabe o caminho — a mente apenas confirma.',
+    'A energia de hoje favorece novas conexões. Saia da rotina, mesmo que seja um pequeno desvio — pode mudar tudo.',
+    'Hoje é dia de gratidão no amor. O que você já tem merece ser celebrado antes de buscar o que falta.',
+    'Um pensamento recorrente sobre alguém hoje não é à toa. As cartas confirmam: essa pessoa também pensa em você.',
+  ]
+};
+
+function getHoroText(periodo, signIdx, seed){
+  var textos = horoTextos[periodo];
+  var idx = (signIdx + seed) % textos.length;
+  return textos[idx];
+}
+
+function initMapaScreen(){
+  const cfg = planConfig[state.plan] || planConfig.ambar;
+  const mapaContent = document.getElementById('mapa-content');
+  const mapaLocked = document.getElementById('mapa-locked');
+  if(mapaContent && mapaLocked){
+    if(cfg.mapa){
+      mapaContent.style.display = 'block';
+      mapaLocked.style.display = 'none';
+    } else {
+      mapaContent.style.display = 'none';
+      mapaLocked.style.display = 'block';
+    }
+  }
+}
+
+function generateFreeReading(){
+  const input = document.getElementById('free-question-input').value.trim();
+  if(!input){ alert('Escreva sua pergunta para os guias.'); return; }
+  const fakeQ = { text: input, ritual: false };
+  generateReading(fakeQ);
+  document.getElementById('free-question-input').value = '';
+}
+
+// GUIDE
+function selectGuide(el, guide){
+  document.querySelectorAll('.guide-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.guide = guide;
+}
+
+// SIGN FROM BIRTH
+function getSign(dateStr){
+  if(!dateStr) return {name:'Indefinido', emoji:'⭐'};
+  try {
+    // Força parse correto sem timezone (evita bug iOS com Date)
+    var parts = dateStr.split('-');
+    var m = parseInt(parts[1], 10);
+    var day = parseInt(parts[2], 10);
+    var signs=[
+      {name:'Capricórnio',emoji:'♑',m:1,d:19},{name:'Aquário',emoji:'♒',m:2,d:18},
+      {name:'Peixes',emoji:'♓',m:3,d:20},{name:'Áries',emoji:'♈',m:4,d:19},
+      {name:'Touro',emoji:'♉',m:5,d:20},{name:'Gêmeos',emoji:'♊',m:6,d:20},
+      {name:'Câncer',emoji:'♋',m:7,d:22},{name:'Leão',emoji:'♌',m:8,d:22},
+      {name:'Virgem',emoji:'♍',m:9,d:22},{name:'Libra',emoji:'♎',m:10,d:22},
+      {name:'Escorpião',emoji:'♏',m:11,d:21},{name:'Sagitário',emoji:'♐',m:12,d:21},
+      {name:'Capricórnio',emoji:'♑',m:12,d:31}
+    ];
+    for(var i=0;i<signs.length;i++){
+      var s=signs[i];
+      if(m<s.m||(m===s.m&&day<=s.d)) return s;
+    }
+    return signs[0];
+  } catch(e){ return {name:'Indefinido', emoji:'⭐'}; }
+}
+
+// GO TO PLANS
+function goToPlans(){
+  const name=document.getElementById('reg-name').value.trim();
+  const birth=document.getElementById('reg-birth').value;
+  const city=document.getElementById('reg-city').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  if(!name||!birth||!city||!email){ alert('Por favor, preencha todos os campos.'); return; }
+  state.name=name; state.birth=birth; state.city=city; state.email=email;
+  const sign=getSign(birth);
+  state.sign=sign.name;
+  showScreen('screen-plans');
+}
+
+// SELECT PLAN
+function selectPlan(plan){
+  try {
+    state.plan=plan;
+    updateDashboard();
+    showScreen('screen-dashboard');
+  } catch(e){ console.log('selectPlan erro:',e); }
+}
+
+// LOGIN DEMO
+function loginDemo(){
+  try {
+    state.name='Visitante'; state.birth='1990-06-15'; state.city='Sao Paulo';
+    state.email='visitante@email.com'; state.guide='lua'; state.plan='ambar';
+    state.sign=getSign(state.birth).name;
+    updateDashboard();
+    showScreen('screen-dashboard');
+  } catch(e){ console.log('loginDemo erro:',e); }
+}
+
+// UPDATE DASHBOARD
+function updateDashboard(){
+  try {
+    var sign=getSign(state.birth);
+    var firstName=state.name.split(' ')[0];
+    var guideEmoji=state.guide==='lua'?'🌙':'☀️';
+    var guideName=state.guide==='lua'?'LUA':'SOL';
+
+    var el;
+    el=document.getElementById('dash-greeting'); if(el) el.textContent=firstName;
+    el=document.getElementById('dash-sign'); if(el) el.textContent=sign.emoji+' '+sign.name+' \u2022 Nasceu em '+state.city;
+    el=document.getElementById('dash-username'); if(el) el.textContent=firstName;
+    el=document.getElementById('guide-avatar'); if(el) el.textContent='\u2728';
+    el=document.getElementById('guide-bubble-name'); if(el) el.textContent='ZARA';
+    // Avatar do perfil
+    el=document.getElementById('profile-guide-emoji'); if(el) el.textContent='\u2728';
+    el=document.getElementById('profile-name-display'); if(el) el.textContent=state.name;
+    el=document.getElementById('profile-sign-display'); if(el) el.textContent=sign.emoji+' '+sign.name;
+    var birthDisplay = '--';
+    if(state.birth){
+      var bp = state.birth.split('-');
+      birthDisplay = bp[2]+'/'+bp[1]+'/'+bp[0];
+    }
+    el=document.getElementById('profile-birth'); if(el) el.textContent=birthDisplay;
+    el=document.getElementById('profile-city'); if(el) el.textContent=state.city||'--';
+    el=document.getElementById('profile-email'); if(el) el.textContent=state.email||'--';
+    var planNames={ambar:'Plano \u00C2mbar \uD83D\uDFE0',rubi:'Plano Rubi \u2764\uFE0F',diamante:'Plano Diamante \uD83D\uDC8E'};
+    el=document.getElementById('profile-plan-display');
+    if(el) el.textContent=(planNames[state.plan]||'Plano Ambar').toUpperCase();
+  } catch(e){ console.log('updateDashboard erro:',e); }
+}
+
+// QUESTIONS
+const questions = {
+  relacionamento: [
+    {text:'Meu relacionamento tem futuro?', ritual:false},
+    {text:'Existe algo me afastando do meu parceiro?', ritual:false},
+    {text:'O que está impedindo nossa conexão crescer?', ritual:false},
+    {text:'Devo continuar ou é hora de deixar ir?', ritual:false},
+  ],
+  interesse: [
+    {text:'Essa pessoa sente algo por mim?', ritual:false},
+    {text:'Existe chance de nos aproximarmos?', ritual:false},
+    {text:'O que está impedindo essa união?', ritual:false},
+    {text:'Como despertar o interesse dessa pessoa?', ritual:false},
+  ],
+  termino: [
+    {text:'Existe chance de reconciliação?', ritual:true},
+    {text:'Essa pessoa vai voltar para mim?', ritual:true},
+    {text:'O que levou ao fim desse amor?', ritual:false},
+    {text:'Como superar essa dor e seguir em frente?', ritual:false},
+  ],
+  destino: [
+    {text:'Existe alguém me desejando agora?', ritual:false},
+    {text:'Quando o amor verdadeiro vai chegar?', ritual:false},
+    {text:'O que os astros dizem sobre meu amor?', ritual:false},
+    {text:'Estou pronta para receber um grande amor?', ritual:false},
+  ],
+  rival: [
+    {text:'Existe uma terceira pessoa interferindo no meu relacionamento?', ritual:true},
+    {text:'Meu parceiro está se afastando por influência de alguém?', ritual:true},
+    {text:'Sinto que alguém está me tirando meu amor — o que as cartas dizem?', ritual:true},
+    {text:'Existe trabalho ou feitiço contra meu relacionamento?', ritual:true},
+    {text:'Como afastar quem está destruindo meu relacionamento?', ritual:true},
+  ]
+};
+
+let currentCategory = 'relacionamento';
+let selectedQuestion = null;
+
+function setCategory(el, cat){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentCategory=cat;
+  loadQuestions(cat);
+  document.getElementById('reading-area').classList.remove('visible');
+  document.getElementById('ritual-cta').classList.remove('visible');
+  selectedQuestion=null;
+}
+
+function loadQuestions(cat){
+  var list=document.getElementById('question-list');
+  if(!list) return;
+  list.innerHTML='';
+  var qs=questions[cat]||[];
+  for(var i=0;i<qs.length;i++){
+    (function(q){
+      var div=document.createElement('div');
+      div.className='question-item'+(q.ritual?' alert-ritual':'');
+      div.textContent=q.text;
+      div.onclick=function(){ selectQuestion(div,q,0); };
+      list.appendChild(div);
+    })(qs[i]);
+  }
+}
+
+// TAROT CARDS DATA
+const tarotCards=[
+  {emoji:'🌟',name:'A Estrela'},{emoji:'🌙',name:'A Lua'},
+  {emoji:'☀️',name:'O Sol'},{emoji:'❤️',name:'Os Enamorados'},
+  {emoji:'⚖️',name:'A Justiça'},{emoji:'🔮',name:'A Sacerdotisa'},
+  {emoji:'🌹',name:'A Imperatriz'},{emoji:'💫',name:'O Mundo'},
+  {emoji:'🌊',name:'A Força'},{emoji:'🕯️',name:'O Eremita'},
+  {emoji:'⚡',name:'A Torre'},{emoji:'🌈',name:'O Julgamento'},
+];
+
+function getRandCards(){
+  var copy=tarotCards.slice();
+  copy.sort(function(){ return Math.random()-0.5; });
+  return copy.slice(0,3);
+}
+
+// READINGS
+const readings = {
+  relacionamento: [
+    {text:'As cartas revelam que seu relacionamento atravessa um ciclo de transformação. O que parece distância é, na verdade, uma reorganização energética necessária. O Universo está preparando o terreno para uma conexão mais autêntica e profunda entre vocês.',positive:true},
+    {text:'Existe uma energia de bloqueio ao redor dessa união. As cartas mostram que pensamentos e medos não expressos estão criando uma névoa entre vocês. A comunicação verdadeira é o caminho — mas existe algo que precisa ser movido espiritualmente antes que as palavras possam fluir.',positive:false},
+    {text:'As cartas mostram um caminho de crescimento para essa relação. Há amor genuíno presente, mas ele precisa de nutrição e atenção. O que foi negligenciado pode ser restaurado com intenção e cuidado.',positive:true},
+    {text:'O momento pede clareza interior. As cartas sugerem que a resposta que você busca já existe dentro de você — os astros apenas aguardam que você confie no que seu coração já sabe.',positive:true},
+  ],
+  interesse: [
+    {text:'A energia desta pessoa vibra próxima a você, mas existe uma hesitação — não por falta de sentimento, mas por medo. As cartas revelam que há atração real, porém algo a impede de agir. O momento favorece uma aproximação suave.',positive:true},
+    {text:'As cartas mostram que esta pessoa carrega pensamentos sobre você com frequência maior do que aparenta. A distância é protetora, não indicativa de desinteresse. O Universo sinaliza que o tempo certo se aproxima.',positive:true},
+    {text:'Existe uma energia de terceiro que interfere nessa aproximação. As cartas revelam um bloqueio que não é natural — algo ou alguém está impedindo que essa conexão floresça da forma que deveria.',positive:false},
+    {text:'As cartas falam de uma conexão com potencial genuíno. O caminho está aberto, mas requer que você se coloque no mundo de forma mais confiante. O Universo sorri para esse encontro.',positive:true},
+  ],
+  termino: [
+    {text:'As cartas revelam que os sentimentos ainda existem dos dois lados — como brasas sob as cinzas. A reconciliação não está descartada pelos astros, mas existe um bloqueio energético que precisa ser trabalhado para que o reencontro seja possível e duradouro.',positive:false},
+    {text:'O término deixou marcas profundas, mas as cartas mostram que essa dor tem uma finalidade: ela está te moldando para um amor maior. O que se foi cumpriu seu papel. O Universo prepara algo mais alinhado com quem você está se tornando.',positive:true},
+    {text:'As cartas indicam que esta pessoa pensa em você mais do que demonstra. Existe um fio de conexão ainda ativo entre vocês. Porém, para que esse fio se transforme em laço, algo precisa ser espiritualmente liberado.',positive:false},
+    {text:'O coração sempre guarda o caminho de volta. As cartas mostram uma janela de possibilidade — mas ela exige movimento, não apenas espera. O Universo favorece quem age com fé.',positive:false},
+  ],
+  destino: [
+    {text:'Sim — existe alguém, neste momento, que carrega seu nome nos pensamentos. As cartas revelam uma presença energética próxima a você, alguém que observa de longe e sente algo que ainda não encontrou coragem de expressar.',positive:true},
+    {text:'Os astros mostram um período de abertura para o amor verdadeiro. A chegada se aproxima, mas requer que você libere o peso do passado. O Universo não pode depositar um presente novo em mãos fechadas.',positive:true},
+    {text:'Vênus e a Lua conspiram a seu favor. As cartas revelam que seu campo energético está em expansão — você está se tornando magneticamente atrativo para o amor que busca. O encontro está mais próximo do que imagina.',positive:true},
+    {text:'As cartas mostram que você está pronta — mais do que percebe. O que falta não é preparação, mas permissão. Se dê a licença de ser amada plenamente.',positive:true},
+  ],
+  rival: [
+    {text:'As cartas confirmam o que seu instinto já sussurrava: existe uma interferência energética nessa relação. Uma terceira presença está influenciando o campo entre vocês — não necessariamente com consciência, mas o efeito é real e precisa de atenção urgente.',positive:false,forceRitual:true},
+    {text:'As cartas revelam uma influência externa poderosa que está desviando a atenção do seu amado. Essa energia não é natural — foi direcionada. Ignorar esse sinal pode custar caro. O momento pede ação espiritual.',positive:false,forceRitual:true},
+    {text:'Existe alguém que deseja o que é seu. As cartas mostram uma intenção clara de separação vinda de fora. Essa interferência tem raízes e, quanto mais tempo passa, mais profunda ela se torna.',positive:false,forceRitual:true},
+    {text:'As cartas revelam um bloqueio que tem nome e intenção. Não é coincidência, não é fase — é uma ação deliberada contra sua união. O Universo mostra esse caminho para que você possa agir a tempo.',positive:false,forceRitual:true},
+    {text:'O que estava oculto as cartas agora revelam: sua relação está sob influência de forças externas. A energia de separação foi plantada e cresce. A resposta espiritual é urgente e necessária.',positive:false,forceRitual:true},
+  ]
+};
+
+const ritualSuggestions = {
+  negative: [
+    'As cartas revelam um bloqueio que vai além do que uma leitura pode mover. Esse tipo de energia precisa ser trabalhada espiritualmente. Nossos especialistas estão disponíveis para te guiar no próximo passo.',
+    'O que as cartas mostram indica que é o momento de agir energeticamente. Uma leitura ilumina — mas é o trabalho espiritual que transforma. Converse com um de nossos especialistas.',
+    'As cartas pedem movimento. Existe um bloqueio real que, sem intervenção espiritual, pode se aprofundar. Nossos especialistas podem te mostrar o caminho.',
+  ],
+  rival: [
+    'As cartas confirmam uma interferência real. Esse tipo de bloqueio tem resposta espiritual — e quanto antes for trabalhado, maior a chance de reverter. Nossos especialistas estão preparados para te orientar.',
+    'O que foi revelado exige ação. Um trabalho de afastamento de rival, feito com conhecimento e intenção, pode mudar completamente esse quadro. Fale agora com nosso especialista.',
+  ]
+};
+
+function selectQuestion(el, q, idx){
+  document.querySelectorAll('.question-item').forEach(function(i){ i.classList.remove('selected'); });
+  el.classList.add('selected');
+  selectedQuestion=q;
+  generateReading(q);
+}
+
+function generateReading(q){
+  try {
+    var readingArea=document.getElementById('reading-area');
+    var ritualCta=document.getElementById('ritual-cta');
+    if(!readingArea) return;
+    readingArea.classList.remove('visible');
+    if(ritualCta) ritualCta.classList.remove('visible');
+    readingArea.classList.add('visible');
+    readingArea.innerHTML='<div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+
+    var cards = getRandCards();
+    var pergunta = q.text || q;
+
+    // Tenta API — se falhar usa textos pré-definidos
+    chamarZara(montarPromptTaro(pergunta, cards)).then(function(respostaIA){
+      try {
+        var texto;
+        var usouIA = false;
+        if(respostaIA){
+          texto = respostaIA;
+          usouIA = true;
+        } else {
+          var catReadings=readings[currentCategory]||readings.relacionamento;
+          var reading=catReadings[Math.floor(Math.random()*catReadings.length)];
+          texto = reading.text;
+        }
+
+        var cardsHtml='';
+        for(var i=0;i<cards.length;i++){
+          cardsHtml+='<div class="tarot-card"><span>'+cards[i].emoji+'</span><div class="tarot-card-name">'+cards[i].name+'</div></div>';
+        }
+        readingArea.innerHTML=
+          '<div class="reading-cards">'+cardsHtml+'</div>'+
+          '<div class="reading-text">'+texto+'</div>'+
+          '<div class="reading-signature">\u2728 ZARA \u2022 AMOR REVELADO</div>';
+
+        state.consultCount++;
+        state.consultHistory.push(new Date().toISOString());
+
+        // CTA ritual — só se não usou IA ou se pergunta já sinaliza ritual
+        var deveOferecer = false;
+        if(!usouIA){
+          var catReadings2=readings[currentCategory]||readings.relacionamento;
+          var reading2=catReadings2[Math.floor(Math.random()*catReadings2.length)];
+          deveOferecer = (q.ritual) || reading2.forceRitual ||
+            (!reading2.positive && state.consultCount-state.lastRitualSuggestion > 1);
+        } else {
+          // Com IA: oferece ritual apenas se pergunta já sinaliza necessidade
+          deveOferecer = (q && q.ritual) || currentCategory === 'rival' ||
+            (state.consultCount > 1 && state.consultCount - state.lastRitualSuggestion > 2);
+        }
+
+        if(deveOferecer && ritualCta){
+          state.lastRitualSuggestion=state.consultCount;
+          var isRival=currentCategory==='rival';
+          var suggestions=isRival?ritualSuggestions.rival:ritualSuggestions.negative;
+          var suggestion=suggestions[Math.floor(Math.random()*suggestions.length)];
+          document.getElementById('ritual-cta-text').textContent='"'+suggestion+'"';
+          ritualCta.classList.add('visible');
+        }
+        readingArea.scrollIntoView({behavior:'smooth',block:'nearest'});
+      } catch(e){ console.log('Erro exibir leitura:',e); }
+    });
+  } catch(e){ console.log('Erro generateReading:',e); }
+}
+
+// NUMEROLOGIA
+function calcNumVida(dateStr){
+  if(!dateStr) return 1;
+  var digits = dateStr.replace(/-/g,'');
+  var sum = 0;
+  for(var i=0;i<digits.length;i++) sum += parseInt(digits[i],10);
+  while(sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+    var s2 = 0;
+    var str = sum.toString();
+    for(var j=0;j<str.length;j++) s2 += parseInt(str[j],10);
+    sum = s2;
+  }
+  return sum;
+}
+
+function calcNumUniao(n1, n2){
+  var sum = n1 + n2;
+  while(sum > 9 && sum !== 11 && sum !== 22 && sum !== 33){
+    var s = 0;
+    var str = sum.toString();
+    for(var j=0;j<str.length;j++) s += parseInt(str[j],10);
+    sum = s;
+  }
+  return sum;
+}
+
+var mapaNumeros = {
+  energia: {
+    1: 'Uma união de líderes. Dois espíritos independentes que se atraem pela força mútua. Quando aprendem a ceder sem perder a essência, constroem algo inabalável.',
+    2: 'Uma das combinações mais harmoniosas da numerologia. O número 2 da união fala de complementaridade, sensibilidade compartilhada e uma comunicação quase telepática entre os dois.',
+    3: 'Criatividade, alegria e expressão definem essa união. Juntos, vocês se inspiram mutuamente. O amor entre vocês é vivido com leveza e entusiasmo genuíno.',
+    4: 'Uma base sólida e duradoura. O número 4 na união indica um amor construído tijolo a tijolo, com paciência e compromisso. Não é paixão fácil — é amor verdadeiro.',
+    5: 'Liberdade e aventura marcam essa conexão. Vocês se atraem pela energia dinâmica e pela curiosidade mútua. O segredo é dar espaço sem perder o laço.',
+    6: 'O número do lar, da família e do cuidado mútuo. Essa união tem vocação para construir algo duradouro e acolhedor. Há uma tendência natural de se protegerem.',
+    7: 'Uma conexão espiritual e profunda. Vocês se entendem em camadas que outros não alcançam. O silêncio entre vocês diz mais do que muitas palavras.',
+    8: 'Poder, ambição e intensidade definem essa união. Quando estão alinhados, são imbatíveis. O desafio está em não transformar o amor em disputa de forças.',
+    9: 'Uma união de almas maduras. O número 9 indica uma conexão kármica — vocês têm algo importante a completar juntos nesta vida. O amor é profundo e transformador.',
+    11: 'Número mestre: uma união de intuição extraordinária e missão compartilhada. Raros se encontram assim. Esse casal tem potencial de inspirar outros.',
+    22: 'Número mestre da manifestação. Juntos, vocês têm a capacidade de construir algo que vai além do comum. Essa união é um projeto de vida.',
+    33: 'O número do amor incondicional. Uma conexão rara, de entrega total e compaixão profunda. O amor aqui transcende o ego.',
+  },
+  desafio: {
+    1: 'O maior desafio é o ego. Ambos querem liderar e têm dificuldade de ceder. Aprender que ceder não é fraqueza será a chave para a harmonia.',
+    2: 'A sensibilidade excessiva pode gerar mal-entendidos. Pequenas mágoas se acumulam em silêncio. A comunicação direta — mesmo quando dói — é o remédio.',
+    3: 'A superficialidade pode ser uma armadilha. Quando as coisas ficam difíceis, a tendência é fugir para a leveza. O amor real exige ficar nos momentos pesados também.',
+    4: 'A rigidez pode sufocar. A rotina que traz segurança também pode aprisionar. Um dos dois precisará ser o vento na vida do outro.',
+    5: 'O excesso de liberdade pode criar distância. Sem raízes, o amor se perde. O desafio é construir uma base sem perder a essência de cada um.',
+    6: 'O cuidado excessivo vira controle. Um dos dois tende a se sacrificar demais — e depois ressente. O amor saudável respeita a individualidade.',
+    7: 'O isolamento pode ser um problema. Ambos preferem profundidade, mas às vezes se fecham tanto que o outro não consegue entrar. Abertura é o trabalho desta união.',
+    8: 'O poder mal distribuído gera conflito. Se um domina e o outro se submete, a relação desequilibra. Parceria real exige respeito mútuo.',
+    9: 'A dificuldade de soltar o passado. Mágoas antigas ressurgem nos momentos de crise. O perdão — de si e do outro — é o maior trabalho espiritual desta união.',
+    11: 'A intensidade pode ser exaustiva. Dois espíritos tão sensíveis precisam de momentos de leveza e descanso emocional para que a conexão não se desgaste.',
+    22: 'As expectativas altas podem frustrar. Quando a realidade não alcança o potencial sonhado, a decepção é grande. Celebrar o que é, não só o que poderia ser.',
+    33: 'O sacrifício excessivo pode destruir. Quando um se perde no outro, o amor vira dependência. Manter a identidade individual é sagrado nesta união.',
+  },
+  potencial: {
+    1: 'Juntos, vocês podem liderar e inspirar. Quando unem forças em vez de competir, tornam-se uma força imparável de realização e amor.',
+    2: 'Vocês têm o potencial de criar o amor mais pacífico e nutritivo que existe. Uma parceria onde ambos florescem na presença do outro.',
+    3: 'Essa união pode gerar arte, alegria e criatividade que inspira quem está ao redor. Um casal que faz o mundo mais bonito por existir.',
+    4: 'Vocês podem construir uma vida extraordinariamente sólida — família, lar, legado. O amor de vocês tem raízes que atravessam gerações.',
+    5: 'Juntos, vocês podem viver uma história de amor que parece saída de um livro. Aventura, crescimento e descoberta a dois — sem limite.',
+    6: 'O potencial de criar um lar cheio de amor genuíno e cuidado. Uma família — seja de sangue ou de escolha — construída sobre bases profundas.',
+    7: 'Vocês podem alcançar juntos uma compreensão espiritual raramente vista. Uma parceria que evolui espiritualmente a cada ciclo vivido.',
+    8: 'Juntos, têm o potencial de construir conquistas extraordinárias. Quando o amor e a ambição se alinham, tudo é possível.',
+    9: 'Essa união tem potencial de cura — de si mesmos e de quem está ao redor. Um amor que transforma e que deixa o mundo melhor.',
+    11: 'Vocês têm o potencial de ser um casal que inspira outros a acreditar no amor. Uma história que vai além do pessoal.',
+    22: 'O potencial desta união é de manifestação concreta de grandes sonhos. Juntos, o impossível se torna projeto.',
+    33: 'O potencial mais elevado: um amor que serve, que cura e que ilumina. Uma união que transcende o tempo.',
+  }
+};
+
+function gerarMapaCasal(){
+  try {
+    var nome1 = (document.getElementById('mapa-nome1').value||'').trim();
+    var nasc1 = document.getElementById('mapa-nasc1').value||'';
+    var nome2 = (document.getElementById('mapa-nome2').value||'').trim();
+    var nasc2 = document.getElementById('mapa-nasc2').value||'';
+    if(!nome1||!nasc1||!nome2||!nasc2){
+      alert('Preencha todos os dados para revelar o Mapa do Casal.');
+      return;
+    }
+
+    var resultado = document.getElementById('mapa-resultado');
+    if(!resultado) return;
+    resultado.style.display = 'none';
+
+    // Loading no botão
+    var btn = document.querySelector('#mapa-content .btn-primary');
+    if(btn){ btn.textContent = 'Calculando...'; btn.disabled = true; }
+
+    var n1 = calcNumVida(nasc1);
+    var n2 = calcNumVida(nasc2);
+    var uniao = calcNumUniao(n1, n2);
+    var sign1 = getSign(nasc1);
+    var sign2 = getSign(nasc2);
+    var primeiro1 = nome1.split(' ')[0];
+    var primeiro2 = nome2.split(' ')[0];
+
+    setTimeout(function(){
+      try {
+        var energiaKey = mapaNumeros.energia[uniao] ? uniao : 9;
+        resultado.style.display = 'block';
+        document.getElementById('mapa-nomes').textContent =
+          primeiro1.toUpperCase() + ' ' + sign1.emoji + '  &  ' + sign2.emoji + ' ' + primeiro2.toUpperCase();
+        document.getElementById('mapa-numeros').textContent =
+          'N\u00famero de Vida: ' + primeiro1 + ' = ' + n1 + '  \u2022  ' + primeiro2 + ' = ' + n2;
+        document.getElementById('mapa-uniao').textContent = uniao;
+
+        // Fallback pré-definido
+        document.getElementById('mapa-energia').textContent = mapaNumeros.energia[energiaKey];
+        document.getElementById('mapa-desafio').textContent = mapaNumeros.desafio[energiaKey];
+        document.getElementById('mapa-potencial').textContent = mapaNumeros.potencial[energiaKey];
+        document.getElementById('mapa-assinatura').textContent = '\u2728 ZARA \u2022 MAPA NUMEROL\u00d3GICO DO CASAL';
+        resultado.scrollIntoView({behavior:'smooth', block:'start'});
+        if(btn){ btn.textContent = 'REVELAR O MAPA DO CASAL'; btn.disabled = false; }
+
+        // Melhora com IA se disponível
+        chamarZara(montarPromptMapa(nome1, sign1, n1, nome2, sign2, n2, uniao)).then(function(r){
+          if(r){
+            var partes = parsearMapaResposta(r);
+            if(partes.energia) document.getElementById('mapa-energia').textContent = partes.energia;
+            if(partes.desafio) document.getElementById('mapa-desafio').textContent = partes.desafio;
+            if(partes.potencial) document.getElementById('mapa-potencial').textContent = partes.potencial;
+          }
+        });
+      } catch(e){ console.log('Erro mapa resultado:',e); }
+    }, 800);
+  } catch(e){ console.log('Erro gerarMapaCasal:',e); }
+}
+
+function openWhatsApp(){
+  window.open('https://wa.me/5511930593526?text=Ol%C3%A1! Vim pelo Amor Revelado e gostaria de saber mais sobre os trabalhos espirituais.','_blank');
+}
+
+function logout(){
+  state.name=''; state.birth=''; state.city=''; state.email='';
+  state.guide='lua'; state.plan='ambar'; state.sign='';
+  state.consultCount=0; state.consultHistory=[];
+  showScreen('screen-landing');
+}
+</script>
+</body>
+</html>
