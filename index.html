@@ -1463,7 +1463,24 @@
   </div>
 </div>
 
-<!-- SCREEN 9: LOGIN -->
+<!-- SCREEN AGUARDANDO PAGAMENTO -->
+<div class="screen" id="screen-aguardando">
+  <div class="logo-area">
+    <span class="logo-symbol" style="font-size:48px">⏳</span>
+    <div class="logo-title" style="font-size:22px">AGUARDANDO</div>
+    <div class="logo-sub">Finalize o pagamento na página aberta</div>
+    <div class="divider"></div>
+  </div>
+  <div class="card" style="text-align:center">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream-dim);font-style:italic;line-height:1.8;margin-bottom:24px">
+      "Complete o pagamento na página que abriu. Após a confirmação, clique no botão abaixo para acessar o app."
+    </div>
+    <button class="btn-primary" onclick="verificarPagamento()">JÁ PAGUEI — ENTRAR</button>
+    <button class="btn-ghost" onclick="showScreen('screen-plans')">← Voltar aos planos</button>
+  </div>
+</div>
+
+<!-- SCREEN LOGIN -->
 <div class="screen" id="screen-login">
   <div class="logo-area" style="margin-bottom:20px">
     <span class="logo-symbol" style="font-size:36px">🌹</span>
@@ -1576,7 +1593,93 @@ var ZARA_SYSTEM = 'Você é Zara, o oráculo espiritual do app Amor Revelado. ' 
   'Escreva sempre em português do Brasil.';
 
 // ============================================
-// CHAMADA À API DO CLAUDE
+// SUPABASE — REST API direta (sem SDK)
+// ============================================
+var SUPABASE_URL = 'https://fdbcpcvojftwohlnhcrt.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_R0G-yIAQxo79FIIhxULT3Q_VpQuIPrp';
+var authToken = null;
+var currentUser = null;
+
+function sbHeaders(extra){
+  var h = {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + (authToken || SUPABASE_KEY)
+  };
+  if(extra) Object.assign(h, extra);
+  return h;
+}
+
+async function sbAuth(action, body){
+  var r = await fetch(SUPABASE_URL + '/auth/v1/' + action, {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json', 'apikey': SUPABASE_KEY },
+    body: JSON.stringify(body)
+  });
+  return r.json();
+}
+
+async function sbSelect(table, filter){
+  var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter + '&limit=1';
+  var r = await fetch(url, { headers: sbHeaders({'Prefer':'return=representation'}) });
+  return r.json();
+}
+
+async function sbInsert(table, data){
+  var r = await fetch(SUPABASE_URL + '/rest/v1/' + table, {
+    method: 'POST',
+    headers: sbHeaders({'Prefer':'return=representation'}),
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}
+
+async function sbUpdate(table, filter, data){
+  var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter;
+  var r = await fetch(url, {
+    method: 'PATCH',
+    headers: sbHeaders({'Prefer':'return=representation'}),
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}
+
+async function initSupabase(){
+  try {
+    // Verifica sessão salva localmente
+    var savedToken = localStorage.getItem('ar_token');
+    var savedUser  = localStorage.getItem('ar_user');
+    if(savedToken && savedUser){
+      authToken = savedToken;
+      currentUser = JSON.parse(savedUser);
+      await carregarUsuario(currentUser);
+    }
+    console.log('Auth iniciado');
+  } catch(e){ console.log('Erro init auth:', e); }
+}
+
+async function carregarUsuario(user){
+  try {
+    var dados = await sbSelect('usuarios', 'id=eq.' + user.id);
+    if(dados && dados[0]){
+      var d = dados[0];
+      state.name = d.nome;
+      state.birth = d.data_nascimento;
+      state.city = d.cidade_nascimento;
+      state.email = d.email;
+      state.plan = d.plano || 'nenhum';
+      state.planoAtivo = d.plano_ativo || false;
+      state.userId = user.id;
+      updateDashboard();
+      if(state.planoAtivo){
+        showScreen('screen-dashboard');
+      } else {
+        showScreen('screen-plans');
+      }
+    }
+  } catch(e){ console.log('Erro carregar usuario:', e); }
+}
+
 // ============================================
 async function chamarZara(prompt){
   try {
@@ -1635,8 +1738,35 @@ function parsearMapaResposta(texto){
 // ============================================
 var state = {
   name: '', birth: '', city: '', email: '', guide: 'lua', plan: 'ambar',
-  sign: '', consultCount: 0, lastRitualSuggestion: -1, consultHistory: []
+  sign: '', consultCount: 0, lastRitualSuggestion: -1, consultHistory: [],
+  planoAtivo: false, userId: null
 };
+
+async function verificarPagamento(){
+  try {
+    if(state.userId && state.plan !== 'nenhum'){
+      await sbUpdate('usuarios', 'id=eq.' + state.userId, {
+        plano: state.plan,
+        plano_ativo: true,
+        data_assinatura: new Date().toISOString()
+      });
+      state.planoAtivo = true;
+      updateDashboard();
+      showScreen('screen-dashboard');
+    } else {
+      alert('Não encontramos seu pagamento ainda. Se acabou de pagar, aguarde alguns minutos e tente novamente.');
+    }
+  } catch(e){ console.log('Erro verificar pagamento:', e); }
+}
+
+// Inicializa Supabase quando a página carrega
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    try {
+      initSupabase();
+    } catch(e){ console.log('Erro init:', e); }
+  }, 500);
+});
 
 // STARS
 const starsEl = document.getElementById('stars');
@@ -1889,26 +2019,75 @@ function getSign(dateStr){
 }
 
 // GO TO PLANS
-function goToPlans(){
-  const name=document.getElementById('reg-name').value.trim();
-  const birth=document.getElementById('reg-birth').value;
-  const city=document.getElementById('reg-city').value.trim();
-  const email=document.getElementById('reg-email').value.trim();
-  if(!name||!birth||!city||!email){ alert('Por favor, preencha todos os campos.'); return; }
-  state.name=name; state.birth=birth; state.city=city; state.email=email;
-  const sign=getSign(birth);
-  state.sign=sign.name;
-  showScreen('screen-plans');
+async function goToPlans(){
+  try {
+    var name  = document.getElementById('reg-name').value.trim();
+    var birth = document.getElementById('reg-birth').value;
+    var city  = document.getElementById('reg-city').value.trim();
+    var email = document.getElementById('reg-email').value.trim();
+    var pass  = document.getElementById('reg-pass').value;
+    if(!name||!birth||!city||!email||!pass){
+      alert('Por favor, preencha todos os campos.'); return;
+    }
+    if(pass.length < 6){
+      alert('A senha deve ter pelo menos 6 caracteres.'); return;
+    }
+
+    var btn = document.querySelector('#screen-register .btn-primary');
+    if(btn){ btn.textContent = 'Criando conta...'; btn.disabled = true; }
+
+    var res = await sbAuth('signup', { email: email, password: pass });
+
+    if(res.error || !res.user){
+      alert('Erro ao criar conta: ' + (res.error ? res.error.message : 'Tente novamente'));
+      if(btn){ btn.textContent = 'CONTINUAR'; btn.disabled = false; }
+      return;
+    }
+
+    authToken = res.access_token;
+    currentUser = res.user;
+    localStorage.setItem('ar_token', authToken);
+    localStorage.setItem('ar_user', JSON.stringify(currentUser));
+
+    await sbInsert('usuarios', {
+      id: res.user.id,
+      nome: name,
+      email: email,
+      data_nascimento: birth,
+      cidade_nascimento: city,
+      plano: 'nenhum',
+      plano_ativo: false
+    });
+
+    state.name=name; state.birth=birth; state.city=city;
+    state.email=email; state.userId=res.user.id; state.planoAtivo=false;
+    state.sign = getSign(birth).name;
+
+    if(btn){ btn.textContent = 'CONTINUAR'; btn.disabled = false; }
+    showScreen('screen-plans');
+  } catch(e){
+    console.log('Erro cadastro:', e);
+    alert('Erro inesperado. Tente novamente.');
+  }
 }
 
 // SELECT PLAN
-function assinarPlano(plan, metodo){
+async function assinarPlano(plan, metodo){
   try {
+    if(state.userId){
+      await sbInsert('pagamentos', {
+        usuario_id: state.userId,
+        email: state.email,
+        plano: plan,
+        valor: plan==='ambar'?19.90:plan==='rubi'?39.90:69.90,
+        status: 'pendente',
+        plataforma: metodo
+      });
+    }
     state.plan = plan;
     var link = metodo === 'kiwify' ? KIWIFY_LINKS[plan] : STRIPE_LINKS[plan];
     if(link){ window.open(link, '_blank'); }
-    updateDashboard();
-    showScreen('screen-dashboard');
+    showScreen('screen-aguardando');
   } catch(e){ console.log('assinarPlano erro:',e); }
 }
 
@@ -1920,15 +2099,31 @@ function selectPlan(plan){
   } catch(e){ console.log('selectPlan erro:',e); }
 }
 
-// LOGIN DEMO
-function loginDemo(){
+async function loginDemo(){
   try {
-    state.name='Visitante'; state.birth='1990-06-15'; state.city='Sao Paulo';
-    state.email='visitante@email.com'; state.guide='lua'; state.plan='ambar';
-    state.sign=getSign(state.birth).name;
-    updateDashboard();
-    showScreen('screen-dashboard');
-  } catch(e){ console.log('loginDemo erro:',e); }
+    var email = document.querySelector('#screen-login input[type="email"]').value.trim();
+    var pass  = document.querySelector('#screen-login input[type="password"]').value;
+    if(!email||!pass){ alert('Preencha e-mail e senha.'); return; }
+
+    var btn = document.querySelector('#screen-login .btn-primary');
+    if(btn){ btn.textContent = 'Entrando...'; btn.disabled = true; }
+
+    var res = await sbAuth('token?grant_type=password', { email: email, password: pass });
+
+    if(res.error || !res.access_token){
+      alert('E-mail ou senha incorretos.');
+      if(btn){ btn.textContent = 'ENTRAR'; btn.disabled = false; }
+      return;
+    }
+
+    authToken = res.access_token;
+    currentUser = res.user;
+    localStorage.setItem('ar_token', authToken);
+    localStorage.setItem('ar_user', JSON.stringify(currentUser));
+
+    if(btn){ btn.textContent = 'ENTRAR'; btn.disabled = false; }
+    await carregarUsuario(res.user);
+  } catch(e){ console.log('Erro login:', e); }
 }
 
 // UPDATE DASHBOARD
@@ -2297,11 +2492,17 @@ function openWhatsApp(){
   window.open('https://wa.me/5511930593526?text=Ol%C3%A1! Vim pelo Amor Revelado e gostaria de saber mais sobre os trabalhos espirituais.','_blank');
 }
 
-function logout(){
-  state.name=''; state.birth=''; state.city=''; state.email='';
-  state.guide='lua'; state.plan='ambar'; state.sign='';
-  state.consultCount=0; state.consultHistory=[];
-  showScreen('screen-landing');
+async function logout(){
+  try {
+    localStorage.removeItem('ar_token');
+    localStorage.removeItem('ar_user');
+    authToken = null; currentUser = null;
+    state.name=''; state.birth=''; state.city=''; state.email='';
+    state.guide='lua'; state.plan='ambar'; state.sign='';
+    state.consultCount=0; state.consultHistory=[];
+    state.planoAtivo=false; state.userId=null;
+    showScreen('screen-landing');
+  } catch(e){ console.log('Erro logout:', e); }
 }
 </script>
 </body>
