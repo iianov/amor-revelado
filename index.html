@@ -2274,4 +2274,35 @@ function gerarMapaCasal(){
         // Fallback pré-definido
         document.getElementById('mapa-energia').textContent = mapaNumeros.energia[energiaKey];
         document.getElementById('mapa-desafio').textContent = mapaNumeros.desafio[energiaKey];
-        document.getElementById('mapa-potencial').t
+        document.getElementById('mapa-potencial').textContent = mapaNumeros.potencial[energiaKey];
+        document.getElementById('mapa-assinatura').textContent = '\u2728 ZARA \u2022 MAPA NUMEROL\u00d3GICO DO CASAL';
+        resultado.scrollIntoView({behavior:'smooth', block:'start'});
+        if(btn){ btn.textContent = 'REVELAR O MAPA DO CASAL'; btn.disabled = false; }
+
+        // Melhora com IA se disponível
+        chamarZara(montarPromptMapa(nome1, sign1, n1, nome2, sign2, n2, uniao)).then(function(r){
+          if(r){
+            var partes = parsearMapaResposta(r);
+            if(partes.energia) document.getElementById('mapa-energia').textContent = partes.energia;
+            if(partes.desafio) document.getElementById('mapa-desafio').textContent = partes.desafio;
+            if(partes.potencial) document.getElementById('mapa-potencial').textContent = partes.potencial;
+          }
+        });
+      } catch(e){ console.log('Erro mapa resultado:',e); }
+    }, 800);
+  } catch(e){ console.log('Erro gerarMapaCasal:',e); }
+}
+
+function openWhatsApp(){
+  window.open('https://wa.me/5511930593526?text=Ol%C3%A1! Vim pelo Amor Revelado e gostaria de saber mais sobre os trabalhos espirituais.','_blank');
+}
+
+function logout(){
+  state.name=''; state.birth=''; state.city=''; state.email='';
+  state.guide='lua'; state.plan='ambar'; state.sign='';
+  state.consultCount=0; state.consultHistory=[];
+  showScreen('screen-landing');
+}
+</script>
+</body>
+</html>
