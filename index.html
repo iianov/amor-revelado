@@ -19,10 +19,10 @@
     --gold-dim: #8a6020;
     --amber: #d4761a;
     --cream: #f5e6c8;
-    --cream-dim: #b89a6a;
+    --cream-dim: #d4b483;
     --wine: #3d1a0f;
     --text: #f0dbb8;
-    --text-dim: #9a7d55;
+    --text-dim: #c49a50;
     --border: rgba(201,146,42,0.25);
     --border-bright: rgba(201,146,42,0.6);
     color-scheme: dark;
@@ -64,7 +64,41 @@
     z-index: 0;
   }
 
-  /* COMPATIBILIDADE iOS/ANDROID */
+  .plan-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .btn-stripe {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    color: var(--bg-deep);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-stripe:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-kiwify {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    padding: 10px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-kiwify:hover { background: rgba(201,146,42,0.08); }
   * { -webkit-box-sizing: border-box; box-sizing: border-box; }
   input, textarea, select, button {
     -webkit-appearance: none;
@@ -999,7 +1033,7 @@
     <div class="divider"></div>
   </div>
   <div class="plans-grid">
-    <div class="plan-card" onclick="assinarPlano('ambar')">
+    <div class="plan-card" onclick="void(0)">
       <span class="plan-icon">🟠</span>
       <div class="plan-name">ÂMBAR</div>
       <div class="plan-price">R$19,90 <span>/mês</span></div>
@@ -1009,9 +1043,12 @@
         <li>Perguntas pré-definidas</li>
         <li>Horóscopo mensal</li>
       </ul>
-      <div style="margin-top:14px;font-size:11px;color:var(--gold-dim);text-align:center;font-family:'Cinzel',serif;letter-spacing:1px">7 DIAS GRÁTIS</div>
+      <div class="plan-btns">
+        <button class="btn-stripe" onclick="assinarPlano('ambar','stripe')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+        <button class="btn-kiwify" onclick="assinarPlano('ambar','kiwify')">PIX / BOLETO — R$10 no 1º mês</button>
+      </div>
     </div>
-    <div class="plan-card featured" onclick="assinarPlano('rubi')">
+    <div class="plan-card featured" onclick="void(0)">
       <div class="plan-badge">POPULAR</div>
       <span class="plan-icon">❤️</span>
       <div class="plan-name">RUBI</div>
@@ -1022,9 +1059,12 @@
         <li>Perguntas pré-definidas</li>
         <li>Horóscopo semanal e mensal</li>
       </ul>
-      <div style="margin-top:14px;font-size:11px;color:var(--gold-dim);text-align:center;font-family:'Cinzel',serif;letter-spacing:1px">7 DIAS GRÁTIS</div>
+      <div class="plan-btns">
+        <button class="btn-stripe" onclick="assinarPlano('rubi','stripe')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+        <button class="btn-kiwify" onclick="assinarPlano('rubi','kiwify')">PIX / BOLETO — R$20 no 1º mês</button>
+      </div>
     </div>
-    <div class="plan-card" onclick="assinarPlano('diamante')">
+    <div class="plan-card" onclick="void(0)">
       <span class="plan-icon">💎</span>
       <div class="plan-name">DIAMANTE</div>
       <div class="plan-price">R$69,90 <span>/mês</span></div>
@@ -1035,6 +1075,10 @@
         <li>Mapa Numerológico do Casal</li>
         <li>Desconto em rituais</li>
       </ul>
+      <div class="plan-btns">
+        <button class="btn-stripe" onclick="assinarPlano('diamante','stripe')">💳 ASSINAR COM CARTÃO</button>
+        <button class="btn-kiwify" onclick="assinarPlano('diamante','kiwify')">PIX / BOLETO</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1504,11 +1548,18 @@
 var CHAVE_API = 'SUA_CHAVE_AQUI';
 var MODELO = 'claude-haiku-4-5-20251001';
 
-// LINKS DE PAGAMENTO STRIPE
+// LINKS DE PAGAMENTO STRIPE (produção — aguardando liberação da conta)
 var STRIPE_LINKS = {
   ambar:    'https://buy.stripe.com/test_00wbJ0bkX7ypbdN2Tf7ss00',
   rubi:     'https://buy.stripe.com/test_cNidR8cp11a16XxeBX7ss01',
   diamante: 'https://buy.stripe.com/test_14A28q74H3i9a9J65r7ss02'
+};
+
+// LINKS DE PAGAMENTO KIWIFY (Pix, boleto e cartão)
+var KIWIFY_LINKS = {
+  ambar:    'https://pay.kiwify.com.br/2SgeunV',
+  rubi:     'https://pay.kiwify.com.br/RRU2Kik',
+  diamante: 'https://pay.kiwify.com.br/hb5G4ff'
 };
 
 // ZARA — prompt base
@@ -1851,16 +1902,11 @@ function goToPlans(){
 }
 
 // SELECT PLAN
-function assinarPlano(plan){
+function assinarPlano(plan, metodo){
   try {
-    // Salva o plano escolhido localmente para uso após retorno do pagamento
     state.plan = plan;
-    // Redireciona para o checkout do Stripe
-    var link = STRIPE_LINKS[plan];
-    if(link){
-      window.open(link, '_blank');
-    }
-    // Também libera acesso local para testes
+    var link = metodo === 'kiwify' ? KIWIFY_LINKS[plan] : STRIPE_LINKS[plan];
+    if(link){ window.open(link, '_blank'); }
     updateDashboard();
     showScreen('screen-dashboard');
   } catch(e){ console.log('assinarPlano erro:',e); }
@@ -2228,35 +2274,4 @@ function gerarMapaCasal(){
         // Fallback pré-definido
         document.getElementById('mapa-energia').textContent = mapaNumeros.energia[energiaKey];
         document.getElementById('mapa-desafio').textContent = mapaNumeros.desafio[energiaKey];
-        document.getElementById('mapa-potencial').textContent = mapaNumeros.potencial[energiaKey];
-        document.getElementById('mapa-assinatura').textContent = '\u2728 ZARA \u2022 MAPA NUMEROL\u00d3GICO DO CASAL';
-        resultado.scrollIntoView({behavior:'smooth', block:'start'});
-        if(btn){ btn.textContent = 'REVELAR O MAPA DO CASAL'; btn.disabled = false; }
-
-        // Melhora com IA se disponível
-        chamarZara(montarPromptMapa(nome1, sign1, n1, nome2, sign2, n2, uniao)).then(function(r){
-          if(r){
-            var partes = parsearMapaResposta(r);
-            if(partes.energia) document.getElementById('mapa-energia').textContent = partes.energia;
-            if(partes.desafio) document.getElementById('mapa-desafio').textContent = partes.desafio;
-            if(partes.potencial) document.getElementById('mapa-potencial').textContent = partes.potencial;
-          }
-        });
-      } catch(e){ console.log('Erro mapa resultado:',e); }
-    }, 800);
-  } catch(e){ console.log('Erro gerarMapaCasal:',e); }
-}
-
-function openWhatsApp(){
-  window.open('https://wa.me/5511930593526?text=Ol%C3%A1! Vim pelo Amor Revelado e gostaria de saber mais sobre os trabalhos espirituais.','_blank');
-}
-
-function logout(){
-  state.name=''; state.birth=''; state.city=''; state.email='';
-  state.guide='lua'; state.plan='ambar'; state.sign='';
-  state.consultCount=0; state.consultHistory=[];
-  showScreen('screen-landing');
-}
-</script>
-</body>
-</html>
+        document.getElementById('mapa-potencial').t
