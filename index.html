@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#1a0f0a">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Amor Revelado</title>
@@ -1020,6 +1021,18 @@
       </div>
     </div>
 
+    <!-- AVISO DE DADOS VERDADEIROS -->
+    <div style="background:rgba(212,118,26,0.12);border:1px solid rgba(212,118,26,0.5);border-radius:10px;padding:16px;margin-top:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent)"></div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="font-size:20px;flex-shrink:0">⚠️</span>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--amber);letter-spacing:2px;margin-bottom:6px">ATENÇÃO — DADOS VERDADEIROS</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream-dim);line-height:1.6;font-style:italic">"Para que a Zara revele com precisão o que o universo reserva para você, é essencial que seu <strong style="color:var(--gold-light);font-style:normal">nome completo</strong> e <strong style="color:var(--gold-light);font-style:normal">data de nascimento</strong> sejam verdadeiros. Dados incorretos resultarão em leituras imprecisas e sem valor espiritual."</div>
+        </div>
+      </div>
+    </div>
+
     <button class="btn-primary" onclick="goToPlans()">CONTINUAR</button>
     <button class="btn-ghost" onclick="showScreen('screen-landing')">← Voltar</button>
   </div>
@@ -1466,16 +1479,31 @@
 <!-- SCREEN AGUARDANDO PAGAMENTO -->
 <div class="screen" id="screen-aguardando">
   <div class="logo-area">
-    <span class="logo-symbol" style="font-size:48px">⏳</span>
-    <div class="logo-title" style="font-size:22px">AGUARDANDO</div>
-    <div class="logo-sub">Finalize o pagamento na página aberta</div>
+    <span class="logo-symbol" style="font-size:48px">🕯️</span>
+    <div class="logo-title" style="font-size:22px">QUASE LÁ</div>
+    <div class="logo-sub">Finalize o pagamento para acessar a Zara</div>
     <div class="divider"></div>
   </div>
   <div class="card" style="text-align:center">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream-dim);font-style:italic;line-height:1.8;margin-bottom:24px">
-      "Complete o pagamento na página que abriu. Após a confirmação, clique no botão abaixo para acessar o app."
+    <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream-dim);font-style:italic;line-height:1.8;margin-bottom:20px">
+      "Complete o pagamento na página que abriu. Seu acesso será liberado automaticamente após a confirmação."
     </div>
-    <button class="btn-primary" onclick="verificarPagamento()">JÁ PAGUEI — ENTRAR</button>
+    <div style="background:rgba(201,146,42,0.08);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:20px">
+      <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-dim);letter-spacing:2px;margin-bottom:6px">✦ PRÓXIMOS PASSOS</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream-dim);line-height:1.7;text-align:left">
+        1. Finalize o pagamento na aba aberta<br>
+        2. Volte para esta página<br>
+        3. Faça login com seu e-mail e senha<br>
+        4. Seu acesso estará liberado
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:16px;font-family:'Cinzel',serif;letter-spacing:1px">
+      Problemas? Fale conosco:
+    </div>
+    <button class="btn-whatsapp" onclick="openWhatsApp()" style="margin-bottom:16px">
+      💬 Falar com Suporte
+    </button>
+    <button class="btn-secondary" onclick="showScreen('screen-login')">JÁ FINALIZEI — FAZER LOGIN</button>
     <button class="btn-ghost" onclick="showScreen('screen-plans')">← Voltar aos planos</button>
   </div>
 </div>
@@ -1674,8 +1702,12 @@ async function carregarUsuario(user){
       if(state.planoAtivo){
         showScreen('screen-dashboard');
       } else {
+        // Tem conta mas não pagou — vai para planos
         showScreen('screen-plans');
       }
+    } else {
+      // Usuário autenticado mas sem dados — vai para landing
+      showScreen('screen-landing');
     }
   } catch(e){ console.log('Erro carregar usuario:', e); }
 }
@@ -2039,7 +2071,17 @@ async function goToPlans(){
     var res = await sbAuth('signup', { email: email, password: pass });
 
     if(res.error || !res.user){
-      alert('Erro ao criar conta: ' + (res.error ? res.error.message : 'Tente novamente'));
+      var msg = 'Erro ao criar conta. Tente novamente.';
+      if(res.error){
+        if(res.error.message && res.error.message.toLowerCase().includes('already registered')){
+          msg = 'Este e-mail já possui uma conta cadastrada. Clique em "Já tenho uma conta" para entrar.';
+        } else if(res.error.message && res.error.message.toLowerCase().includes('rate limit')){
+          msg = 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';
+        } else {
+          msg = res.error.message || msg;
+        }
+      }
+      alert(msg);
       if(btn){ btn.textContent = 'CONTINUAR'; btn.disabled = false; }
       return;
     }
