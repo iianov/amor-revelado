@@ -999,7 +999,7 @@
     <div class="divider"></div>
   </div>
   <div class="plans-grid">
-    <div class="plan-card" onclick="selectPlan('ambar')">
+    <div class="plan-card" onclick="assinarPlano('ambar')">
       <span class="plan-icon">🟠</span>
       <div class="plan-name">ÂMBAR</div>
       <div class="plan-price">R$19,90 <span>/mês</span></div>
@@ -1007,10 +1007,11 @@
         <li>1 consulta por semana</li>
         <li>3 perguntas por consulta</li>
         <li>Perguntas pré-definidas</li>
-        <li>Horóscopo semanal</li>
+        <li>Horóscopo mensal</li>
       </ul>
+      <div style="margin-top:14px;font-size:11px;color:var(--gold-dim);text-align:center;font-family:'Cinzel',serif;letter-spacing:1px">7 DIAS GRÁTIS</div>
     </div>
-    <div class="plan-card featured" onclick="selectPlan('rubi')">
+    <div class="plan-card featured" onclick="assinarPlano('rubi')">
       <div class="plan-badge">POPULAR</div>
       <span class="plan-icon">❤️</span>
       <div class="plan-name">RUBI</div>
@@ -1019,18 +1020,19 @@
         <li>3 consultas por semana</li>
         <li>5 perguntas por consulta</li>
         <li>Perguntas pré-definidas</li>
-        <li>Horóscopo diário</li>
+        <li>Horóscopo semanal e mensal</li>
       </ul>
+      <div style="margin-top:14px;font-size:11px;color:var(--gold-dim);text-align:center;font-family:'Cinzel',serif;letter-spacing:1px">7 DIAS GRÁTIS</div>
     </div>
-    <div class="plan-card" onclick="selectPlan('diamante')">
+    <div class="plan-card" onclick="assinarPlano('diamante')">
       <span class="plan-icon">💎</span>
       <div class="plan-name">DIAMANTE</div>
       <div class="plan-price">R$69,90 <span>/mês</span></div>
       <ul class="plan-features">
         <li>Consultas ilimitadas</li>
         <li>Pergunta livre</li>
-        <li>Horóscopo diário personalizado</li>
-        <li>Mapa do Casal exclusivo</li>
+        <li>Horóscopo diário, semanal e mensal</li>
+        <li>Mapa Numerológico do Casal</li>
         <li>Desconto em rituais</li>
       </ul>
     </div>
@@ -1502,6 +1504,13 @@
 var CHAVE_API = 'SUA_CHAVE_AQUI';
 var MODELO = 'claude-haiku-4-5-20251001';
 
+// LINKS DE PAGAMENTO STRIPE
+var STRIPE_LINKS = {
+  ambar:    'https://buy.stripe.com/test_00wbJ0bkX7ypbdN2Tf7ss00',
+  rubi:     'https://buy.stripe.com/test_cNidR8cp11a16XxeBX7ss01',
+  diamante: 'https://buy.stripe.com/test_14A28q74H3i9a9J65r7ss02'
+};
+
 // ZARA — prompt base
 var ZARA_SYSTEM = 'Você é Zara, o oráculo espiritual do app Amor Revelado. ' +
   'Você faz leituras de tarô e numerologia com sabedoria, mistério e sensibilidade. ' +
@@ -1842,12 +1851,28 @@ function goToPlans(){
 }
 
 // SELECT PLAN
+function assinarPlano(plan){
+  try {
+    // Salva o plano escolhido localmente para uso após retorno do pagamento
+    state.plan = plan;
+    // Redireciona para o checkout do Stripe
+    var link = STRIPE_LINKS[plan];
+    if(link){
+      window.open(link, '_blank');
+    }
+    // Também libera acesso local para testes
+    updateDashboard();
+    showScreen('screen-dashboard');
+  } catch(e){ console.log('assinarPlano erro:',e); }
+}
+
 function selectPlan(plan){
   try {
     state.plan=plan;
     updateDashboard();
     showScreen('screen-dashboard');
   } catch(e){ console.log('selectPlan erro:',e); }
+}
 }
 
 // LOGIN DEMO
