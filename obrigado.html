@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bem-vindo ao Amor Revelado</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #1a0f0a;
+    --bg-card: #2e1a0e;
+    --gold: #c9922a;
+    --gold-light: #e8b84b;
+    --gold-dim: #8a6020;
+    --amber: #d4761a;
+    --cream: #f5e6c8;
+    --cream-dim: #d4b483;
+    --wine: #3d1a0f;
+    --text: #f0dbb8;
+    --text-dim: #c49a50;
+    --border: rgba(201,146,42,0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: #1a0f0a !important;
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* STARS */
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--gold-light);
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) var(--delay, 0s) infinite alternate;
+    opacity: 0.3;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.1; transform: scale(0.8); }
+    100% { opacity: 0.7; transform: scale(1.2); }
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,146,42,0.07) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .check-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(201,146,42,0.2), rgba(212,118,26,0.2));
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 24px;
+    animation: glowPulse 3s ease-in-out infinite;
+    box-shadow: 0 0 40px rgba(201,146,42,0.3);
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(201,146,42,0.3); }
+    50% { box-shadow: 0 0 50px rgba(201,146,42,0.6); }
+  }
+
+  .logo {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--gold-dim);
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto;
+  }
+
+  .zara-card {
+    background: linear-gradient(145deg, #2e1a0e, #3d1a0f);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 400px;
+    width: 100%;
+    margin: 24px auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .zara-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
+
+  .zara-avatar {
+    font-size: 36px;
+    margin-bottom: 8px;
+    display: block;
+    filter: drop-shadow(0 0 16px rgba(201,146,42,0.5));
+  }
+
+  .zara-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+
+  .zara-role {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  .zara-message {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    font-style: italic;
+  }
+
+  .steps {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto 28px;
+    text-align: left;
+  }
+
+  .steps-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    color: var(--bg-deep);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--cream-dim);
+    line-height: 1.5;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border: none;
+    border-radius: 10px;
+    padding: 16px 40px;
+    color: var(--bg-deep);
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(201,146,42,0.3);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 6px 30px rgba(201,146,42,0.5);
+    transform: translateY(-2px);
+  }
+
+  .terms-link {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+  }
+
+  .terms-link a { color: var(--gold-dim); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+  <div class="logo">AMOR REVELADO</div>
+
+  <div class="check-circle">✨</div>
+
+  <div class="title">SUA JORNADA<br>COMEÇA AGORA</div>
+
+  <div class="divider"></div>
+
+  <div class="zara-card">
+    <span class="zara-avatar">✨</span>
+    <div class="zara-name">ZARA</div>
+    <div class="zara-role">Seu oráculo espiritual</div>
+    <div class="zara-message">
+      "O universo registrou seu passo. As cartas já se movem em seu favor. Estou aqui para revelar o que o coração tanto busca — quando você estiver pronto, eu estarei presente."
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="steps-title">✦ Como começar</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Acesse o Amor Revelado e faça seu cadastro com os dados que usou no pagamento</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Escolha seu plano na tela de planos — seu acesso já está liberado</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Faça sua primeira consulta com a Zara e descubra o que as cartas têm a revelar</div>
+    </div>
+  </div>
+
+  <a href="https://amor-revelado.vercel.app" class="btn-primary">ACESSAR O APP</a>
+
+  <div class="terms-link">
+    Ao utilizar o serviço você concorda com nossos
+    <a href="https://amor-revelado.vercel.app/termos.html" target="_blank">Termos de Uso e Privacidade</a>
+  </div>
+
+</div>
+
+<script>
+  // Stars
+  var starsEl = document.getElementById('stars');
+  for(var i=0;i<50;i++){
+    var s=document.createElement('div');
+    s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--d',(2+Math.random()*4)+'s');
+    s.style.setProperty('--delay',(Math.random()*3)+'s');
+    starsEl.appendChild(s);
+  }
+</script>
+</body>
+</html>
