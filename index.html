@@ -442,8 +442,58 @@
     top: 6px;
   }
 
-  /* DASHBOARD */
-  .dashboard { padding: 0; justify-content: flex-start; }
+  .user-menu {
+    position: relative;
+  }
+  .user-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .user-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: linear-gradient(145deg, #2e1a0e, #3d1a0f);
+    border: 1px solid var(--border-bright);
+    border-radius: 12px;
+    min-width: 160px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    z-index: 100;
+    display: none;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+  }
+  .user-dropdown.open { display: block; }
+  .user-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--cream-dim);
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+  }
+  .user-dropdown-item:hover { background: rgba(201,146,42,0.1); color: var(--gold-light); }
+  .user-dropdown-item.danger { color: #e57373; }
+  .user-dropdown-item.danger:hover { background: rgba(229,115,115,0.1); }
+  .user-dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+  }
   .dash-header {
     width: 100%;
     background: linear-gradient(180deg, #2e1a0e, #1a0f0a);
@@ -1100,9 +1150,17 @@
 <div class="screen dashboard" id="screen-dashboard">
   <div class="dash-header">
     <div class="dash-logo">AMOR REVELADO</div>
-    <div class="dash-user">
-      <span id="dash-username" style="font-size:12px"></span>
-      <div class="dash-avatar">🌙</div>
+    <div class="user-menu" id="user-menu">
+      <button class="user-menu-btn" onclick="toggleUserMenu()">
+        <span id="dash-username" style="font-size:12px;color:var(--cream-dim);font-family:'Cinzel',serif;letter-spacing:1px"></span>
+        <div class="dash-avatar">✨</div>
+      </button>
+      <div class="user-dropdown" id="user-dropdown">
+        <button class="user-dropdown-item" onclick="closeUserMenu();showScreen('screen-profile')">👤 MEU PERFIL</button>
+        <button class="user-dropdown-item" onclick="closeUserMenu();showScreen('screen-plans')">💎 ALTERAR PLANO</button>
+        <div class="user-dropdown-divider"></div>
+        <button class="user-dropdown-item danger" onclick="closeUserMenu();logout()">🚪 SAIR</button>
+      </div>
     </div>
   </div>
 
@@ -1834,6 +1892,24 @@ function consultasEssaSemana(){
     return count;
   } catch(e){ return 0; }
 }
+
+function toggleUserMenu(){
+  var dd = document.getElementById('user-dropdown');
+  if(dd) dd.classList.toggle('open');
+}
+
+function closeUserMenu(){
+  var dd = document.getElementById('user-dropdown');
+  if(dd) dd.classList.remove('open');
+}
+
+// Fecha menu ao clicar fora
+document.addEventListener('click', function(e){
+  var menu = document.getElementById('user-menu');
+  if(menu && !menu.contains(e.target)){
+    closeUserMenu();
+  }
+});
 
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
