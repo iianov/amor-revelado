@@ -1091,6 +1091,9 @@
 <!-- SCREEN 3: PLANS -->
 <div class="screen" id="screen-plans">
   <div style="width:100%;max-width:420px;margin-bottom:24px;text-align:center;position:relative;z-index:1">
+    <div id="plans-back-btn" style="display:none;text-align:left;margin-bottom:12px">
+      <button class="back-btn" onclick="showScreen('screen-dashboard')" style="display:inline-flex;align-items:center;gap:6px">← Voltar</button>
+    </div>
     <div class="logo-title" style="font-size:20px;margin-bottom:4px">ESCOLHA SEU PLANO</div>
     <div class="logo-sub">Comece sua jornada espiritual</div>
     <div class="divider"></div>
@@ -1912,12 +1915,16 @@ document.addEventListener('click', function(e){
 });
 
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
   if(id==='screen-consult') initConsultScreen();
   if(id==='screen-horoscope') initHoroscopeScreen();
   if(id==='screen-mapa') initMapaScreen();
+  if(id==='screen-plans'){
+    var backBtn = document.getElementById('plans-back-btn');
+    if(backBtn) backBtn.style.display = state.planoAtivo ? 'block' : 'none';
+  }
 }
 
 function initConsultScreen(){
