@@ -2613,9 +2613,22 @@ function gerarMapaCasal(){
   } catch(e){ console.log('Erro gerarMapaCasal:',e); }
 }
 
+var RITUAL_LINKS = {
+  'Simpatia do Mel':        'https://wa.me/p/36148052128176290/5511930593526',
+  'Banho de Atração':       'https://wa.me/p/27197903053198045/5511930593526',
+  'Defumação de Abertura':  'https://wa.me/p/27757543547175867/5511930593526',
+  'Adoçamento Amoroso':     'https://wa.me/p/27104147292603733/5511930593526',
+  'Amarração de Pensamento':'https://wa.me/p/36342851525329624/5511930593526'
+};
+
 function abrirRitual(nome, valor){
-  var msg = 'Olá! Vim pelo Amor Revelado e tenho interesse no ritual *' + nome + '* (R$' + valor + '). Gostaria de saber mais e realizar o pagamento.';
-  window.open('https://wa.me/5511930593526?text=' + encodeURIComponent(msg), '_blank');
+  var link = RITUAL_LINKS[nome];
+  if(link){
+    window.open(link, '_blank');
+  } else {
+    var msg = 'Olá! Vim pelo Amor Revelado e tenho interesse no ritual *' + nome + '* (R$' + valor + '). Gostaria de realizar o pagamento.';
+    window.open('https://wa.me/5511930593526?text=' + encodeURIComponent(msg), '_blank');
+  }
 }
 
 function openWhatsApp(){
