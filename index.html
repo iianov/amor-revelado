@@ -1259,7 +1259,7 @@
     </div>
 
     <div class="section-title">✦ RITUAIS LEVES</div>
-    <div class="ritual-item">
+    <div class="ritual-item" onclick="abrirRitual('Simpatia do Mel','79')">
       <span class="ritual-emoji">🍯</span>
       <div class="ritual-info">
         <div class="ritual-name">SIMPATIA DO MEL</div>
@@ -1267,7 +1267,7 @@
       </div>
       <div class="ritual-price">R$79</div>
     </div>
-    <div class="ritual-item">
+    <div class="ritual-item" onclick="abrirRitual('Banho de Atração','79')">
       <span class="ritual-emoji">🌸</span>
       <div class="ritual-info">
         <div class="ritual-name">BANHO DE ATRAÇÃO</div>
@@ -1275,7 +1275,7 @@
       </div>
       <div class="ritual-price">R$79</div>
     </div>
-    <div class="ritual-item">
+    <div class="ritual-item" onclick="abrirRitual('Defumação de Abertura','89')">
       <span class="ritual-emoji">🌿</span>
       <div class="ritual-info">
         <div class="ritual-name">DEFUMAÇÃO DE ABERTURA</div>
@@ -1285,7 +1285,7 @@
     </div>
 
     <div class="section-title" style="margin-top:20px">✦ RITUAIS MÉDIOS</div>
-    <div class="ritual-item">
+    <div class="ritual-item" onclick="abrirRitual('Adoçamento Amoroso','129')">
       <span class="ritual-emoji">🕯️</span>
       <div class="ritual-info">
         <div class="ritual-name">ADOÇAMENTO AMOROSO</div>
@@ -1293,7 +1293,7 @@
       </div>
       <div class="ritual-price">R$129</div>
     </div>
-    <div class="ritual-item">
+    <div class="ritual-item" onclick="abrirRitual('Amarração de Pensamento','129')">
       <span class="ritual-emoji">🔮</span>
       <div class="ritual-info">
         <div class="ritual-name">AMARRAÇÃO DE PENSAMENTO</div>
@@ -2530,8 +2530,14 @@ function gerarMapaCasal(){
   } catch(e){ console.log('Erro gerarMapaCasal:',e); }
 }
 
+function abrirRitual(nome, valor){
+  var msg = 'Olá! Vim pelo Amor Revelado e tenho interesse no ritual *' + nome + '* (R$' + valor + '). Gostaria de saber mais e realizar o pagamento.';
+  window.open('https://wa.me/5511930593526?text=' + encodeURIComponent(msg), '_blank');
+}
+
 function openWhatsApp(){
-  window.open('https://wa.me/5511930593526?text=Ol%C3%A1! Vim pelo Amor Revelado e gostaria de saber mais sobre os trabalhos espirituais.','_blank');
+  var msg = 'Olá! Vim pelo Amor Revelado e gostaria de saber mais sobre os trabalhos espirituais.';
+  window.open('https://wa.me/5511930593526?text=' + encodeURIComponent(msg), '_blank');
 }
 
 async function logout(){
