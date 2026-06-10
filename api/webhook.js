@@ -1,7 +1,8 @@
+import crypto from 'crypto';
+ 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
  
-  // Mercado Pago envia GET para verificar o endpoint
   if(req.method === 'GET'){
     return res.status(200).json({ status: 'ok' });
   }
@@ -11,10 +12,36 @@ export default async function handler(req, res) {
   }
  
   try {
+    // Validar assinatura do Mercado Pago
+    const secret = process.env.MP_WEBHOOK_SECRET;
+    if(secret){
+      const xSignature = req.headers['x-signature'];
+      const xRequestId = req.headers['x-request-id'];
+      const body = req.body;
+      const dataId = body && body.data ? body.data.id : '';
+ 
+      if(xSignature){
+        const parts = xSignature.split(',');
+        let ts = '', v1 = '';
+        parts.forEach(p => {
+          const [k, v] = p.trim().split('=');
+          if(k === 'ts') ts = v;
+          if(k === 'v1') v1 = v;
+        });
+ 
+        const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`;
+        const hmac = crypto.createHmac('sha256', secret).update(manifest).digest('hex');
+ 
+        if(hmac !== v1){
+          console.log('Assinatura invalida');
+          return res.status(401).json({ error: 'Invalid signature' });
+        }
+      }
+    }
+ 
     const body = req.body;
     console.log('Webhook recebido:', JSON.stringify(body));
  
-    // Mercado Pago envia notificação de assinatura
     const topic = body.type || body.topic;
     const id = body.data ? body.data.id : body.id;
  
@@ -22,11 +49,9 @@ export default async function handler(req, res) {
       return res.status(200).json({ status: 'ignored' });
     }
  
-    // Processar apenas eventos de assinatura
     if(topic === 'subscription_preapproval' || topic === 'subscription_authorized_payment'){
       const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
  
-      // Buscar detalhes da assinatura no Mercado Pago
       const mpRes = await fetch(`https://api.mercadopago.com/preapproval/${id}`, {
         headers: { 'Authorization': `Bearer ${ACCESS_TOKEN}` }
       });
@@ -37,13 +62,12 @@ export default async function handler(req, res) {
       }
  
       const assinatura = await mpRes.json();
-      console.log('Assinatura:', JSON.stringify(assinatura));
+      console.log('Assinatura status:', assinatura.status, 'email:', assinatura.payer_email);
  
       const status = assinatura.status;
       const email = assinatura.payer_email;
       const planId = assinatura.preapproval_plan_id;
  
-      // Mapear plan_id para nome do plano
       const planos = {
         '7e6bc72dacd9472983c2b5637079586c': 'ambar',
         '7f6cd35e1b594f33ad661e80e946a20b': 'rubi',
@@ -51,49 +75,29 @@ export default async function handler(req, res) {
       };
       const plano = planos[planId] || 'ambar';
  
-      // Supabase — atualizar status do usuário
       const SUPABASE_URL = 'https://fdbcpcvojftwohlnhcrt.supabase.co';
-      const SUPABASE_KEY = process.env.ANTHROPIC_API_KEY; // usa service key
       const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
  
+      const sbHeaders = {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+        'Prefer': 'return=representation'
+      };
+ 
       if(status === 'authorized'){
-        // Pagamento aprovado — liberar acesso
         const updateRes = await fetch(
           `${SUPABASE_URL}/rest/v1/usuarios?email=eq.${encodeURIComponent(email)}`,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              'apikey': SUPABASE_SERVICE_KEY || 'sb_publishable_R0G-yIAQxo79FIIhxULT3Q_VpQuIPrp',
-              'Authorization': `Bearer ${SUPABASE_SERVICE_KEY || 'sb_publishable_R0G-yIAQxo79FIIhxULT3Q_VpQuIPrp'}`,
-              'Prefer': 'return=representation'
-            },
-            body: JSON.stringify({
-              plano: plano,
-              plano_ativo: true,
-              data_assinatura: new Date().toISOString()
-            })
-          }
+          { method: 'PATCH', headers: sbHeaders,
+            body: JSON.stringify({ plano, plano_ativo: true, data_assinatura: new Date().toISOString() }) }
         );
-        console.log('Usuario atualizado:', await updateRes.text());
+        console.log('Acesso liberado para:', email, 'plano:', plano);
  
       } else if(status === 'cancelled' || status === 'paused'){
-        // Assinatura cancelada — revogar acesso
         await fetch(
           `${SUPABASE_URL}/rest/v1/usuarios?email=eq.${encodeURIComponent(email)}`,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              'apikey': SUPABASE_SERVICE_KEY || 'sb_publishable_R0G-yIAQxo79FIIhxULT3Q_VpQuIPrp',
-              'Authorization': `Bearer ${SUPABASE_SERVICE_KEY || 'sb_publishable_R0G-yIAQxo79FIIhxULT3Q_VpQuIPrp'}`,
-              'Prefer': 'return=representation'
-            },
-            body: JSON.stringify({
-              plano: 'nenhum',
-              plano_ativo: false
-            })
-          }
+          { method: 'PATCH', headers: sbHeaders,
+            body: JSON.stringify({ plano: 'nenhum', plano_ativo: false }) }
         );
         console.log('Acesso revogado para:', email);
       }
