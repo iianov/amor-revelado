@@ -8,6 +8,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Amor Revelado">
+<meta name="application-name" content="Amor Revelado">
+<meta name="theme-color" content="#1a0f0a">
+<link rel="manifest" href="/manifest.json">
 <title>Amor Revelado</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -100,6 +104,78 @@
     transition: all 0.3s;
   }
   .btn-kiwify:hover { background: rgba(201,146,42,0.08); }
+  /* BANNER INSTALAÇÃO PWA */
+  .install-banner {
+    background: linear-gradient(145deg, #2e1a0e, #3d1a0f);
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    display: none;
+  }
+  .install-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
+  .install-banner-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .install-banner-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+  }
+  .install-banner-close {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+  .install-steps {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .install-step {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: var(--cream-dim);
+    padding: 4px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .install-step span:first-child { color: var(--gold); flex-shrink: 0; }
+  .install-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border: none;
+    border-radius: 8px;
+    padding: 11px;
+    color: var(--bg-deep);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .install-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
   * { -webkit-box-sizing: border-box; box-sizing: border-box; }
   input, textarea, select, button {
     -webkit-appearance: none;
@@ -1017,19 +1093,100 @@
 <div class="stars" id="stars"></div>
 
 <!-- SCREEN 1: LANDING -->
-<div class="screen active" id="screen-landing">
-  <div class="logo-area">
-    <span class="logo-symbol">🌹</span>
-    <div class="logo-title">AMOR REVELADO</div>
-    <div class="logo-sub">Onde o coração encontra o mistério</div>
-    <div class="divider"></div>
+<div class="screen active" id="screen-landing" style="justify-content:flex-start;padding:0;overflow-y:auto">
+
+  <!-- HERO -->
+  <div style="width:100%;text-align:center;padding:48px 24px 32px;background:linear-gradient(180deg,#241408,#1a0f0a)">
+    <span style="font-size:56px;display:block;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(201,146,42,0.5));animation:glowPulse 3s ease-in-out infinite">🌹</span>
+    <div style="font-family:'Cinzel',serif;font-size:28px;color:var(--gold-light);letter-spacing:4px;margin-bottom:8px">AMOR REVELADO</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--cream-dim);margin-bottom:24px">Onde o coração encontra o mistério</div>
+    <div style="width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 28px"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);line-height:1.5;max-width:340px;margin:0 auto 12px">
+      "O amor que você busca tem respostas.<br>A Zara vai revelá-las."
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:32px">Consultas de tarô • Numerologia • Rituais espirituais</div>
+    <button class="btn-primary" style="max-width:320px;margin:0 auto 12px;display:block" onclick="showScreen('screen-register')">INICIAR MINHA JORNADA</button>
+    <button class="btn-secondary" style="max-width:320px;margin:0 auto" onclick="showScreen('screen-login')">JÁ TENHO UMA CONTA</button>
   </div>
-  <div class="card">
-    <div class="card-title">BEM-VINDO</div>
-    <div class="card-subtitle">O universo tem respostas para o seu coração</div>
-    <button class="btn-primary" onclick="showScreen('screen-register')">INICIAR MINHA JORNADA</button>
-    <button class="btn-secondary" onclick="showScreen('screen-login')">JÁ TENHO UMA CONTA</button>
+
+  <!-- O QUE É -->
+  <div style="width:100%;padding:32px 24px;max-width:480px;margin:0 auto">
+    <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-align:center;margin-bottom:16px">✦ O QUE É O AMOR REVELADO</div>
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:14px;padding:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+      <div style="text-align:center;font-size:32px;margin-bottom:12px">✨</div>
+      <div style="font-family:'Cinzel',serif;font-size:13px;color:var(--gold-light);letter-spacing:2px;text-align:center;margin-bottom:8px">ZARA</div>
+      <div style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-dim);letter-spacing:2px;text-align:center;margin-bottom:16px">SEU ORÁCULO ESPIRITUAL PESSOAL</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream-dim);line-height:1.8;font-style:italic;text-align:center">
+        "Sou Zara — uma oracle digital treinada nas tradições do tarô e da numerologia. Estou aqui para revelar o que o universo tem a dizer sobre o seu amor."
+      </div>
+    </div>
   </div>
+
+  <!-- RECURSOS -->
+  <div style="width:100%;padding:0 24px 32px;max-width:480px;margin:0 auto">
+    <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-align:center;margin-bottom:16px">✦ O QUE VOCÊ VAI ENCONTRAR</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🃏</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">TARÔ</div>
+        <div style="font-size:11px;color:var(--text-dim)">Consultas personalizadas com a Zara sobre amor e relacionamentos</div>
+      </div>
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">⭐</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">HORÓSCOPO</div>
+        <div style="font-size:11px;color:var(--text-dim)">Previsões diárias, semanais e mensais focadas no amor</div>
+      </div>
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">💞</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">MAPA DO CASAL</div>
+        <div style="font-size:11px;color:var(--text-dim)">Mapa numerológico que revela a energia entre duas almas</div>
+      </div>
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🕯️</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">RITUAIS</div>
+        <div style="font-size:11px;color:var(--text-dim)">Rituais autorais para aproximar, harmonizar e proteger o amor</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANOS -->
+  <div style="width:100%;padding:0 24px 32px;max-width:480px;margin:0 auto">
+    <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-align:center;margin-bottom:16px">✦ ESCOLHA SEU PLANO</div>
+
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light)">🟠 ÂMBAR</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream)">R$19,90<span style="font-size:12px;color:var(--text-dim)">/mês</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.8">1 consulta/semana · Horóscopo mensal · 7 dias grátis</div>
+    </div>
+
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--gold);border-radius:12px;padding:18px;margin-bottom:10px;position:relative">
+      <div style="position:absolute;top:-1px;right:12px;background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--bg-deep);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:3px 10px;border-radius:0 0 8px 8px;font-weight:600">POPULAR</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light)">❤️ RUBI</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream)">R$39,90<span style="font-size:12px;color:var(--text-dim)">/mês</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.8">3 consultas/semana · Horóscopo semanal e mensal · 7 dias grátis</div>
+    </div>
+
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light)">💎 DIAMANTE</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream)">R$69,90<span style="font-size:12px;color:var(--text-dim)">/mês</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.8">Ilimitado · Pergunta livre · Mapa do Casal · Horóscopo diário</div>
+    </div>
+
+    <button class="btn-primary" onclick="showScreen('screen-register')">EXPERIMENTAR GRÁTIS POR 7 DIAS</button>
+    <button class="btn-secondary" style="margin-top:12px" onclick="showScreen('screen-login')">JÁ TENHO UMA CONTA</button>
+
+    <div style="text-align:center;margin-top:20px;padding-bottom:20px">
+      <a href="/termos.html" target="_blank" style="font-family:'Cinzel',serif;font-size:9px;color:var(--text-dim);letter-spacing:1px">Termos de Uso e Privacidade</a>
+    </div>
+  </div>
+
 </div>
 
 <!-- SCREEN 2: REGISTER -->
@@ -1165,6 +1322,35 @@
   </div>
 
   <div class="dash-content pb-nav">
+    <!-- BANNER INSTALAÇÃO PWA -->
+    <div class="install-banner" id="install-banner">
+      <div class="install-banner-header">
+        <div class="install-banner-title">✦ INSTALE O APP</div>
+        <button class="install-banner-close" onclick="fecharBannerInstall()">×</button>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream-dim);font-style:italic;margin-bottom:12px;line-height:1.6">
+        "Adicione o Amor Revelado à sua tela inicial e acesse a Zara com um toque — como um app nativo."
+      </div>
+      <!-- iOS -->
+      <div id="install-ios" style="display:none">
+        <div class="install-steps">
+          <div class="install-step"><span>1.</span><span>Toque no ícone de compartilhar <strong>⬆</strong> na barra inferior do Safari</span></div>
+          <div class="install-step"><span>2.</span><span>Role para baixo e toque em <strong>"Adicionar à Tela de Início"</strong></span></div>
+          <div class="install-step"><span>3.</span><span>Toque em <strong>"Adicionar"</strong> no canto superior direito</span></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);text-align:center;font-family:'Cinzel',serif;letter-spacing:1px">Disponível apenas no Safari</div>
+      </div>
+      <!-- Android -->
+      <div id="install-android" style="display:none">
+        <div class="install-steps">
+          <div class="install-step"><span>1.</span><span>Toque nos <strong>três pontinhos ⋮</strong> no canto superior do Chrome</span></div>
+          <div class="install-step"><span>2.</span><span>Toque em <strong>"Adicionar à tela inicial"</strong> ou <strong>"Instalar app"</strong></span></div>
+          <div class="install-step"><span>3.</span><span>Confirme tocando em <strong>"Instalar"</strong></span></div>
+        </div>
+        <button class="install-btn" id="install-btn-android" onclick="instalarAndroid()">📲 INSTALAR AGORA</button>
+      </div>
+    </div>
+
     <div class="greeting">
       <div class="greeting-small">✦ Bem-vinda de volta</div>
       <div class="greeting-name" id="dash-greeting">Carregando...</div>
@@ -1672,7 +1858,55 @@ var ZARA_SYSTEM = 'Você é Zara, o oráculo espiritual do app Amor Revelado. ' 
   'Escreva sempre em português do Brasil.';
 
 // ============================================
-// SUPABASE — REST API direta (sem SDK)
+// PWA INSTALL BANNER
+// ============================================
+var deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function mostrarBannerInstall(){
+  // Não mostra se já instalou ou já fechou
+  if(localStorage.getItem('ar_install_fechado')) return;
+  // Não mostra se já está instalado como PWA
+  if(window.matchMedia('(display-mode: standalone)').matches) return;
+
+  var banner = document.getElementById('install-banner');
+  if(!banner) return;
+
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var isAndroid = /android/i.test(navigator.userAgent);
+
+  if(isIOS){
+    banner.style.display = 'block';
+    document.getElementById('install-ios').style.display = 'block';
+  } else if(isAndroid || deferredPrompt){
+    banner.style.display = 'block';
+    document.getElementById('install-android').style.display = 'block';
+  }
+}
+
+function fecharBannerInstall(){
+  var banner = document.getElementById('install-banner');
+  if(banner) banner.style.display = 'none';
+  localStorage.setItem('ar_install_fechado', '1');
+}
+
+function instalarAndroid(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(result){
+      if(result.outcome === 'accepted'){
+        fecharBannerInstall();
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+
+// ============================================
 // ============================================
 var SUPABASE_URL = 'https://fdbcpcvojftwohlnhcrt.supabase.co';
 var SUPABASE_KEY = 'sb_publishable_R0G-yIAQxo79FIIhxULT3Q_VpQuIPrp';
@@ -1752,6 +1986,7 @@ async function carregarUsuario(user){
       updateDashboard();
       if(state.planoAtivo){
         showScreen('screen-dashboard');
+        setTimeout(mostrarBannerInstall, 1500);
       } else {
         // Tem conta mas não pagou — vai para planos
         showScreen('screen-plans');
