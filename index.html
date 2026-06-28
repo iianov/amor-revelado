@@ -1096,28 +1096,22 @@
 <div class="screen active" id="screen-landing" style="justify-content:flex-start;padding:0;overflow-y:auto">
 
   <!-- HERO -->
-  <div style="position:relative;width:100%;text-align:center;padding:56px 24px 40px;overflow:hidden;background:linear-gradient(180deg,#241408,#1a0f0a)">
-    <!-- IMAGEM DE FUNDO -->
-    <div style="position:absolute;inset:0;background-image:url('/images/hero-tarot.png');background-size:cover;background-position:center;opacity:0.5"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,15,10,0.55) 0%,rgba(26,15,10,0.78) 55%,#1a0f0a 100%)"></div>
-
-    <div style="position:relative;z-index:1">
-      <span style="font-size:56px;display:block;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(201,146,42,0.5));animation:glowPulse 3s ease-in-out infinite">🌹</span>
-      <div style="font-family:'Cinzel',serif;font-size:28px;color:var(--gold-light);letter-spacing:4px;margin-bottom:8px">AMOR REVELADO</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--cream-dim);margin-bottom:20px">Onde o coração encontra o mistério</div>
-      <div style="width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 24px"></div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:27px;color:var(--cream);line-height:1.4;max-width:360px;margin:0 auto 12px;font-weight:600">
-        As respostas que seu coração procura já existem
-      </div>
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--cream-dim);line-height:1.6;max-width:330px;margin:0 auto 18px">
-        Descubra o que ele sente, o que está bloqueando o seu amor e exatamente o que fazer — revelado pela Zara em segundos.
-      </div>
-      <div style="display:inline-block;background:rgba(201,146,42,0.12);border:1px solid rgba(201,146,42,0.4);border-radius:20px;padding:6px 16px;font-family:'Cinzel',serif;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:28px">
-        ✦ EXPERIÊNCIA ESPIRITUAL EXCLUSIVA ✦
-      </div>
-      <button class="btn-primary" style="max-width:320px;margin:0 auto 12px;display:block" onclick="showScreen('screen-register')">✨ QUERO REVELAR MEU AMOR</button>
-      <button class="btn-secondary" style="max-width:320px;margin:0 auto" onclick="showScreen('screen-login')">JÁ TENHO UMA CONTA</button>
+  <div style="width:100%;text-align:center;padding:48px 24px 32px;background:linear-gradient(180deg,#241408,#1a0f0a)">
+    <span style="font-size:56px;display:block;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(201,146,42,0.5));animation:glowPulse 3s ease-in-out infinite">🌹</span>
+    <div style="font-family:'Cinzel',serif;font-size:28px;color:var(--gold-light);letter-spacing:4px;margin-bottom:8px">AMOR REVELADO</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--cream-dim);margin-bottom:20px">Onde o coração encontra o mistério</div>
+    <div style="width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 24px"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);line-height:1.5;max-width:340px;margin:0 auto 10px;font-weight:600">
+      Seu amor está travado?
     </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--cream-dim);line-height:1.6;max-width:320px;margin:0 auto 16px">
+      "Descubra o que ele sente, o que está bloqueando e o que fazer — agora."
+    </div>
+    <div style="display:inline-block;background:rgba(201,146,42,0.12);border:1px solid rgba(201,146,42,0.4);border-radius:20px;padding:6px 16px;font-family:'Cinzel',serif;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:28px">
+      ✦ EXPERIÊNCIA ESPIRITUAL EXCLUSIVA ✦
+    </div>
+    <button class="btn-primary" style="max-width:320px;margin:0 auto 12px;display:block" onclick="showScreen('screen-register')">✨ QUERO REVELAR MEU AMOR</button>
+    <button class="btn-secondary" style="max-width:320px;margin:0 auto;display:block" onclick="showScreen('screen-login')">JÁ TENHO UMA CONTA</button>
   </div>
 
   <!-- COMO FUNCIONA -->
@@ -1150,70 +1144,44 @@
 
   <!-- ZARA -->
   <div style="width:100%;padding:0 24px 28px;max-width:480px;margin:0 auto">
-    <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-align:center;margin-bottom:16px">✦ CONHEÇA A ZARA</div>
-    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:14px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:2"></div>
-      <!-- RETRATO -->
-      <div style="position:relative;height:240px;overflow:hidden">
-        <img src="/images/zara-oracle.png" alt="Zara, a oráculo do Amor Revelado" style="width:100%;height:100%;object-fit:cover;object-position:center 25%">
-        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(46,26,14,0.85) 85%,#2e1a0e 100%)"></div>
-        <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center">
-          <div style="font-family:'Cinzel',serif;font-size:18px;color:var(--gold-light);letter-spacing:3px;text-shadow:0 2px 12px rgba(0,0,0,0.6)">ZARA</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--cream-dim)">Oráculo do Amor Revelado</div>
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:14px;padding:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="width:44px;height:44px;background:rgba(201,146,42,0.15);border:1px solid var(--gold-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px">✨</div>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light);letter-spacing:2px">ZARA</div>
+          <div style="font-size:11px;color:var(--text-dim);font-style:italic">Oracle digital do Amor Revelado</div>
         </div>
       </div>
-      <div style="padding:20px 24px 24px">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream-dim);line-height:1.8;font-style:italic">
-          "Fui criada e treinada por Pai Igor — guia espiritual com anos de experiência em tarô e numerologia. Cada leitura que faço carrega a essência do seu trabalho e da tradição dos Orixás. Estou aqui para revelar o que o universo guarda sobre o seu amor."
-        </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream-dim);line-height:1.8;font-style:italic">
+        "Fui criada e treinada por Pai Igor — guia espiritual com anos de experiência em tarô e numerologia. Cada leitura que faço carrega a essência do seu trabalho e da tradição dos Orixás. Estou aqui para revelar o que o universo guarda sobre o seu amor."
       </div>
     </div>
   </div>
 
   <!-- RECURSOS -->
   <div style="width:100%;padding:0 24px 28px;max-width:480px;margin:0 auto">
-    <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-align:center;margin-bottom:6px">✦ TUDO EM UM SÓ APP</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text-dim);text-align:center;margin-bottom:18px">Quatro caminhos para revelar o seu amor</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="height:110px;overflow:hidden;position:relative">
-          <img src="/images/app-mockup.png" alt="Leituras de tarô com inteligência artificial" style="width:100%;height:100%;object-fit:cover">
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(46,26,14,0.9))"></div>
-        </div>
-        <div style="padding:12px 14px 16px;text-align:center">
-          <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">TARÔ COM IA</div>
-          <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Leituras personalizadas em segundos sobre amor e relacionamentos</div>
-        </div>
+    <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-align:center;margin-bottom:16px">✦ TUDO EM UM SÓ APP</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🃏</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">TARÔ COM IA</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Leituras personalizadas em segundos sobre amor e relacionamentos</div>
       </div>
-      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="height:110px;overflow:hidden;position:relative">
-          <img src="/images/horoscope.png" alt="Horóscopo do amor" style="width:100%;height:100%;object-fit:cover">
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(46,26,14,0.9))"></div>
-        </div>
-        <div style="padding:12px 14px 16px;text-align:center">
-          <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">HORÓSCOPO</div>
-          <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Previsões diárias, semanais e mensais focadas no seu amor</div>
-        </div>
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">⭐</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">HORÓSCOPO</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Previsões diárias, semanais e mensais focadas no seu amor</div>
       </div>
-      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="height:110px;overflow:hidden;position:relative">
-          <img src="/images/celestial-map.png" alt="Mapa de compatibilidade do casal" style="width:100%;height:100%;object-fit:cover">
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(46,26,14,0.9))"></div>
-        </div>
-        <div style="padding:12px 14px 16px;text-align:center">
-          <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">MAPA DO CASAL</div>
-          <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Compatibilidade numerológica entre duas almas</div>
-        </div>
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">💞</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">MAPA DO CASAL</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Compatibilidade numerológica entre duas almas</div>
       </div>
-      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="height:110px;overflow:hidden;position:relative">
-          <img src="/images/ritual-candles.png" alt="Rituais de amor" style="width:100%;height:100%;object-fit:cover">
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(46,26,14,0.9))"></div>
-        </div>
-        <div style="padding:12px 14px 16px;text-align:center">
-          <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">RITUAIS</div>
-          <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Rituais autorais para mover energias amorosas</div>
-        </div>
+      <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🕯️</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:4px">RITUAIS</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.5">Rituais autorais para mover energias amorosas</div>
       </div>
     </div>
   </div>
@@ -1242,32 +1210,35 @@
     <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold-dim);letter-spacing:3px;text-align:center;margin-bottom:16px">✦ ESCOLHA SEU PLANO</div>
     <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--text-dim);text-align:center;margin-bottom:16px">Âmbar e Rubi incluem 7 dias grátis para experimentar</div>
 
-    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:10px;cursor:pointer;transition:all 0.3s" onclick="irParaCadastro('ambar')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:10px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light)">🟠 ÂMBAR</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream)">R$19,90<span style="font-size:12px;color:var(--text-dim)">/mês</span></div>
       </div>
       <div style="font-size:11px;color:var(--text-dim);line-height:1.8;margin-bottom:10px">1 consulta/semana · Horóscopo mensal · Vitrine de rituais</div>
-      <div style="background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--bg-deep);font-weight:700;letter-spacing:1px">7 DIAS GRÁTIS → EXPERIMENTAR</div>
+      <button onclick="irParaCadastro('ambar','mp')" style="width:100%;background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--bg-deep);font-weight:700;letter-spacing:1px;cursor:pointer;margin-bottom:6px">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+      <button onclick="irParaCadastro('ambar','kiwify')" style="width:100%;background:transparent;border:1px solid var(--border-bright);border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;cursor:pointer">📱 PIX — R$10 NO 1º MÊS</button>
     </div>
 
-    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--gold);border-radius:12px;padding:18px;margin-bottom:10px;cursor:pointer;position:relative;transition:all 0.3s" onclick="irParaCadastro('rubi')" onmouseover="this.style.boxShadow='0 4px 20px rgba(201,146,42,0.3)'" onmouseout="this.style.boxShadow='none'">
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--gold);border-radius:12px;padding:18px;margin-bottom:10px;position:relative">
       <div style="position:absolute;top:-1px;right:12px;background:linear-gradient(135deg,var(--gold),var(--amber));color:var(--bg-deep);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:3px 10px;border-radius:0 0 8px 8px;font-weight:600">POPULAR</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light)">❤️ RUBI</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream)">R$39,90<span style="font-size:12px;color:var(--text-dim)">/mês</span></div>
       </div>
       <div style="font-size:11px;color:var(--text-dim);line-height:1.8;margin-bottom:10px">3 consultas/semana · Horóscopo semanal e mensal · Vitrine de rituais</div>
-      <div style="background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--bg-deep);font-weight:700;letter-spacing:1px">7 DIAS GRÁTIS → EXPERIMENTAR</div>
+      <button onclick="irParaCadastro('rubi','mp')" style="width:100%;background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--bg-deep);font-weight:700;letter-spacing:1px;cursor:pointer;margin-bottom:6px">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+      <button onclick="irParaCadastro('rubi','kiwify')" style="width:100%;background:transparent;border:1px solid var(--border-bright);border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;cursor:pointer">📱 PIX — R$20 NO 1º MÊS</button>
     </div>
 
-    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:24px;cursor:pointer;transition:all 0.3s" onclick="irParaCadastro('diamante')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+    <div style="background:linear-gradient(145deg,#2e1a0e,#3d1a0f);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:24px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--gold-light)">💎 DIAMANTE</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream)">R$69,90<span style="font-size:12px;color:var(--text-dim)">/mês</span></div>
       </div>
       <div style="font-size:11px;color:var(--text-dim);line-height:1.8;margin-bottom:10px">Consultas ilimitadas · Pergunta livre · Mapa do Casal · Horóscopo diário</div>
-      <div style="background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--bg-deep);font-weight:700;letter-spacing:1px">ASSINAR AGORA →</div>
+      <button onclick="irParaCadastro('diamante','mp')" style="width:100%;background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--bg-deep);font-weight:700;letter-spacing:1px;cursor:pointer;margin-bottom:6px">💳 ASSINAR COM CARTÃO</button>
+      <button onclick="irParaCadastro('diamante','kiwify')" style="width:100%;background:transparent;border:1px solid var(--border-bright);border-radius:6px;padding:8px;text-align:center;font-family:'Cinzel',serif;font-size:11px;color:var(--gold-light);letter-spacing:1px;cursor:pointer">📱 ASSINAR COM PIX</button>
     </div>
 
     <button class="btn-secondary" onclick="showScreen('screen-login')">JÁ TENHO UMA CONTA</button>
@@ -1394,7 +1365,8 @@
         <li>Horóscopo mensal</li>
       </ul>
       <div class="plan-btns">
-        <button class="btn-stripe" onclick="assinarPlano('ambar')">EXPERIMENTAR 7 DIAS GRÁTIS</button>
+        <button class="btn-stripe" onclick="assinarPlano('ambar','mp')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+        <button class="btn-kiwify" onclick="assinarPlano('ambar','kiwify')">📱 PIX — R$10 NO 1º MÊS</button>
       </div>
     </div>
     <div class="plan-card featured" onclick="void(0)">
@@ -1409,7 +1381,8 @@
         <li>Horóscopo semanal e mensal</li>
       </ul>
       <div class="plan-btns">
-        <button class="btn-stripe" onclick="assinarPlano('rubi')">EXPERIMENTAR 7 DIAS GRÁTIS</button>
+        <button class="btn-stripe" onclick="assinarPlano('rubi','mp')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+        <button class="btn-kiwify" onclick="assinarPlano('rubi','kiwify')">📱 PIX — R$20 NO 1º MÊS</button>
       </div>
     </div>
     <div class="plan-card" onclick="void(0)">
@@ -1424,7 +1397,8 @@
         <li>Desconto em rituais</li>
       </ul>
       <div class="plan-btns">
-        <button class="btn-stripe" onclick="assinarPlano('diamante')">ASSINAR AGORA</button>
+        <button class="btn-stripe" onclick="assinarPlano('diamante','mp')">💳 ASSINAR COM CARTÃO</button>
+        <button class="btn-kiwify" onclick="assinarPlano('diamante','kiwify')">📱 ASSINAR COM PIX</button>
       </div>
     </div>
   </div>
@@ -1971,6 +1945,12 @@ var MP_LINKS = {
   diamante: 'https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=e496ff4f4fdc4c63bc28ff569c1a6ca6'
 };
 
+var KIWIFY_LINKS = {
+  ambar:    'https://pay.kiwify.com.br/xzGhuCi',
+  rubi:     'https://pay.kiwify.com.br/9j2PtqK',
+  diamante: 'https://pay.kiwify.com.br/QFzzL7g'
+};
+
 // ZARA — prompt base
 var ZARA_SYSTEM = 'Você é Zara, o oráculo espiritual do app Amor Revelado. ' +
   'Você faz leituras de tarô e numerologia com sabedoria, mistério e sensibilidade. ' +
@@ -2184,7 +2164,7 @@ function parsearMapaResposta(texto){
 var state = {
   name: '', birth: '', city: '', email: '', guide: 'lua', plan: 'ambar',
   sign: '', consultCount: 0, lastRitualSuggestion: -1, consultHistory: [],
-  planoAtivo: false, userId: null
+  planoAtivo: false, userId: null, metodo: 'mp'
 };
 
 async function verificarPagamento(){
@@ -2486,8 +2466,9 @@ function getSign(dateStr){
 }
 
 // GO TO PLANS
-function irParaCadastro(plan){
+function irParaCadastro(plan, metodo){
   state.plan = plan;
+  state.metodo = metodo || 'mp';
   showScreen('screen-register');
 }
 
@@ -2553,7 +2534,7 @@ async function _goToPlansAsync(name, birth, city, email, pass){
     if(btn){ btn.textContent = 'CONTINUAR'; btn.disabled = false; }
 
     if(state.plan && state.plan !== 'nenhum'){
-      await assinarPlano(state.plan);
+      await assinarPlano(state.plan, state.metodo || 'mp');
     } else {
       showScreen('screen-plans');
     }
@@ -2564,7 +2545,7 @@ async function _goToPlansAsync(name, birth, city, email, pass){
 }
 
 // SELECT PLAN
-async function assinarPlano(plan){
+async function assinarPlano(plan, metodo){
   try {
     if(state.userId){
       await sbInsert('pagamentos', {
@@ -2573,11 +2554,11 @@ async function assinarPlano(plan){
         plano: plan,
         valor: plan==='ambar'?19.90:plan==='rubi'?39.90:69.90,
         status: 'pendente',
-        plataforma: 'mercadopago'
+        plataforma: metodo || 'mercadopago'
       });
     }
     state.plan = plan;
-    var link = MP_LINKS[plan];
+    var link = (metodo === 'kiwify') ? KIWIFY_LINKS[plan] : MP_LINKS[plan];
     if(link){ window.open(link, '_blank'); }
     showScreen('screen-aguardando');
   } catch(e){ console.log('assinarPlano erro:',e); }
