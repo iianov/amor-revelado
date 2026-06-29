@@ -2083,6 +2083,22 @@ async function carregarUsuario(user){
     var dados = await sbSelect('usuarios', 'id=eq.' + user.id);
     if(dados && dados[0]){
       var d = dados[0];
+
+      // Verifica se trial expirou sem pagamento confirmado
+      if(d.plano_ativo && d.data_expiracao && !d.data_assinatura_confirmada){
+        var expiracao = new Date(d.data_expiracao);
+        var agora = new Date();
+        if(agora > expiracao){
+          // Trial expirou — revoga acesso
+          await sbUpdate('usuarios', 'id=eq.' + user.id, {
+            plano: 'nenhum',
+            plano_ativo: false
+          });
+          d.plano_ativo = false;
+          d.plano = 'nenhum';
+        }
+      }
+
       state.name = d.nome;
       state.birth = d.data_nascimento;
       state.city = d.cidade_nascimento;
@@ -2095,11 +2111,9 @@ async function carregarUsuario(user){
         showScreen('screen-dashboard');
         setTimeout(mostrarBannerInstall, 1500);
       } else {
-        // Tem conta mas não pagou — vai para planos
         showScreen('screen-plans');
       }
     } else {
-      // Usuário autenticado mas sem dados — vai para landing
       showScreen('screen-landing');
     }
   } catch(e){ console.log('Erro carregar usuario:', e); }
@@ -2556,11 +2570,31 @@ async function assinarPlano(plan, metodo){
         status: 'pendente',
         plataforma: metodo || 'mercadopago'
       });
+
+      // Se for cartão (MP), libera acesso imediato por 7 dias de trial
+      if(metodo === 'mp' || !metodo){
+        var expiracao = new Date();
+        expiracao.setDate(expiracao.getDate() + 7);
+        await sbUpdate('usuarios', 'id=eq.' + state.userId, {
+          plano: plan,
+          plano_ativo: true,
+          data_assinatura: new Date().toISOString(),
+          data_expiracao: expiracao.toISOString()
+        });
+        state.planoAtivo = true;
+      }
     }
     state.plan = plan;
     var link = (metodo === 'kiwify') ? KIWIFY_LINKS[plan] : MP_LINKS[plan];
     if(link){ window.open(link, '_blank'); }
-    showScreen('screen-aguardando');
+    // Se cartão, vai direto para o dashboard após abrir o MP
+    if(metodo === 'mp' || !metodo){
+      updateDashboard();
+      showScreen('screen-dashboard');
+      setTimeout(mostrarBannerInstall, 1500);
+    } else {
+      showScreen('screen-aguardando');
+    }
   } catch(e){ console.log('assinarPlano erro:',e); }
 }
 
