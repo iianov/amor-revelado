@@ -11,14 +11,20 @@ function sbHeaders(key) {
   };
 }
 
-async function liberarAcesso(email, plano) {
+async function liberarAcesso(email, plano, confirmado = false) {
   const key = process.env.SUPABASE_SERVICE_KEY;
+  const update = {
+    plano,
+    plano_ativo: true,
+    data_assinatura: new Date().toISOString(),
+    data_expiracao: null // Remove expiração quando pagamento confirmado
+  };
+  if(confirmado) update.data_assinatura_confirmada = new Date().toISOString();
   await fetch(
     `${SUPABASE_URL}/rest/v1/usuarios?email=eq.${encodeURIComponent(email)}`,
-    { method: 'PATCH', headers: sbHeaders(key),
-      body: JSON.stringify({ plano, plano_ativo: true, data_assinatura: new Date().toISOString() }) }
+    { method: 'PATCH', headers: sbHeaders(key), body: JSON.stringify(update) }
   );
-  console.log('Acesso liberado para:', email, 'plano:', plano);
+  console.log('Acesso liberado para:', email, 'plano:', plano, 'confirmado:', confirmado);
 }
 
 async function revogarAcesso(email) {
@@ -26,12 +32,11 @@ async function revogarAcesso(email) {
   await fetch(
     `${SUPABASE_URL}/rest/v1/usuarios?email=eq.${encodeURIComponent(email)}`,
     { method: 'PATCH', headers: sbHeaders(key),
-      body: JSON.stringify({ plano: 'nenhum', plano_ativo: false }) }
+      body: JSON.stringify({ plano: 'nenhum', plano_ativo: false, data_expiracao: null }) }
   );
   console.log('Acesso revogado para:', email);
 }
 
-// ─── MERCADO PAGO ───────────────────────────────────────────
 async function processarMP(body) {
   const topic = body.type || body.topic;
   const id = body.data ? body.data.id : body.id;
@@ -55,45 +60,39 @@ async function processarMP(body) {
     };
     const plano = planos[planId] || 'ambar';
 
-    if(status === 'authorized') await liberarAcesso(email, plano);
+    if(status === 'authorized') await liberarAcesso(email, plano, true);
     else if(status === 'cancelled' || status === 'paused') await revogarAcesso(email);
   }
 }
 
-// ─── KIWIFY ────────────────────────────────────────────────
 async function processarKiwify(body) {
   const evento = body.event || body.type;
   const email = body.Customer?.email || body.customer?.email || body.email;
+  const checkoutId = body.Product?.checkout_id || body.product?.checkout_id || '';
   const productId = body.Product?.id || body.product?.id || '';
 
-  console.log('Kiwify evento:', evento, 'email:', email, 'product:', productId);
+  console.log('Kiwify evento:', evento, 'email:', email);
 
-  // Mapear produto para plano
   const planos = {
     'xzGhuCi': 'ambar',
     '9j2PtqK': 'rubi',
     'QFzzL7g': 'diamante'
   };
-
-  // Tenta identificar o plano pelo checkout_id ou product id
-  const checkoutId = body.Product?.checkout_id || body.product?.checkout_id || '';
   const plano = planos[checkoutId] || planos[productId] || 'ambar';
 
   if(!email) { console.log('Kiwify: email não encontrado'); return; }
 
   if(evento === 'order_approved' || evento === 'purchase_approved' ||
      evento === 'subscription_renewed' || evento === 'compra_aprovada') {
-    await liberarAcesso(email, plano);
+    await liberarAcesso(email, plano, true);
   } else if(evento === 'subscription_canceled' || evento === 'refund' ||
             evento === 'assinatura_cancelada' || evento === 'reembolso') {
     await revogarAcesso(email);
   }
 }
 
-// ─── HANDLER PRINCIPAL ─────────────────────────────────────
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-
   if(req.method === 'GET') return res.status(200).json({ status: 'ok' });
   if(req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -101,7 +100,6 @@ export default async function handler(req, res) {
     const body = req.body;
     console.log('Webhook recebido:', JSON.stringify(body));
 
-    // Detecta origem — Kiwify envia token no header ou no body
     const kiwifyToken = req.headers['x-kiwify-token'] ||
                         req.headers['authorization'] ||
                         body.token;
@@ -109,25 +107,6 @@ export default async function handler(req, res) {
     if(kiwifyToken && kiwifyToken === process.env.KIWIFY_WEBHOOK_TOKEN){
       await processarKiwify(body);
     } else {
-      // Valida assinatura Mercado Pago
-      const secret = process.env.MP_WEBHOOK_SECRET;
-      const xSignature = req.headers['x-signature'];
-      if(secret && xSignature){
-        const xRequestId = req.headers['x-request-id'];
-        const dataId = body && body.data ? body.data.id : '';
-        const parts = xSignature.split(',');
-        let ts = '', v1 = '';
-        parts.forEach(p => {
-          const [k, v] = p.trim().split('=');
-          if(k === 'ts') ts = v;
-          if(k === 'v1') v1 = v;
-        });
-        const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`;
-        const hmac = crypto.createHmac('sha256', secret).update(manifest).digest('hex');
-        if(hmac !== v1){
-          console.log('Assinatura MP invalida — tentando processar mesmo assim');
-        }
-      }
       await processarMP(body);
     }
 
