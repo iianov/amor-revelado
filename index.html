@@ -2053,13 +2053,17 @@ async function sbAuth(action, body){
     headers: { 'Content-Type':'application/json', 'apikey': SUPABASE_KEY },
     body: JSON.stringify(body)
   });
-  return r.json();
+  var json = await r.json();
+  console.log('[sbAuth] ' + action + ' → status ' + r.status, json);
+  return json;
 }
 
 async function sbSelect(table, filter){
   var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter + '&limit=1';
   var r = await fetch(url, { headers: sbHeaders({'Prefer':'return=representation'}) });
-  return r.json();
+  var json = await r.json();
+  if(!r.ok) console.log('[sbSelect] erro em ' + table + ' → status ' + r.status, json);
+  return json;
 }
 
 async function sbInsert(table, data){
@@ -2068,7 +2072,9 @@ async function sbInsert(table, data){
     headers: sbHeaders({'Prefer':'return=representation'}),
     body: JSON.stringify(data)
   });
-  return r.json();
+  var json = await r.json();
+  if(!r.ok) console.log('[sbInsert] erro ao inserir em ' + table + ' → status ' + r.status, json);
+  return json;
 }
 
 async function sbUpdate(table, filter, data){
@@ -2078,7 +2084,9 @@ async function sbUpdate(table, filter, data){
     headers: sbHeaders({'Prefer':'return=representation'}),
     body: JSON.stringify(data)
   });
-  return r.json();
+  var json = await r.json();
+  if(!r.ok) console.log('[sbUpdate] erro ao atualizar ' + table + ' → status ' + r.status, json);
+  return json;
 }
 
 async function initSupabase(){
