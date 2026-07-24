@@ -1382,8 +1382,8 @@ src="https://www.facebook.com/tr?id=1019163864247408&ev=PageView&noscript=1"
         <li>Horóscopo mensal</li>
       </ul>
       <div class="plan-btns">
-        <button class="btn-stripe" onclick="assinarPlano('ambar','mp')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
-        <button class="btn-kiwify" onclick="assinarPlano('ambar','kiwify')">📱 PIX — R$10 NO 1º MÊS</button>
+        <button class="btn-stripe" onclick="clickAssinar('ambar','mp')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+        <button class="btn-kiwify" onclick="clickAssinar('ambar','kiwify')">📱 PIX — R$10 NO 1º MÊS</button>
       </div>
     </div>
     <div class="plan-card featured" onclick="void(0)">
@@ -1398,8 +1398,8 @@ src="https://www.facebook.com/tr?id=1019163864247408&ev=PageView&noscript=1"
         <li>Horóscopo semanal e mensal</li>
       </ul>
       <div class="plan-btns">
-        <button class="btn-stripe" onclick="assinarPlano('rubi','mp')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
-        <button class="btn-kiwify" onclick="assinarPlano('rubi','kiwify')">📱 PIX — R$20 NO 1º MÊS</button>
+        <button class="btn-stripe" onclick="clickAssinar('rubi','mp')">💳 CARTÃO — 7 DIAS GRÁTIS</button>
+        <button class="btn-kiwify" onclick="clickAssinar('rubi','kiwify')">📱 PIX — R$20 NO 1º MÊS</button>
       </div>
     </div>
     <div class="plan-card" onclick="void(0)">
@@ -1414,8 +1414,8 @@ src="https://www.facebook.com/tr?id=1019163864247408&ev=PageView&noscript=1"
         <li>Desconto em rituais</li>
       </ul>
       <div class="plan-btns">
-        <button class="btn-stripe" onclick="assinarPlano('diamante','mp')">💳 ASSINAR COM CARTÃO</button>
-        <button class="btn-kiwify" onclick="assinarPlano('diamante','kiwify')">📱 ASSINAR COM PIX</button>
+        <button class="btn-stripe" onclick="clickAssinar('diamante','mp')">💳 ASSINAR COM CARTÃO</button>
+        <button class="btn-kiwify" onclick="clickAssinar('diamante','kiwify')">📱 ASSINAR COM PIX</button>
       </div>
     </div>
   </div>
@@ -2516,11 +2516,18 @@ function goToPlans(){
     if(pass.length < 6){
       alert('A senha deve ter pelo menos 6 caracteres.'); return;
     }
-    _goToPlansAsync(name, birth, city, email, pass);
+    // Abre a aba em branco AGORA, ainda dentro do clique do usuário,
+    // para o navegador não bloquear o pop-up. Só navegamos ela depois,
+    // quando soubermos o link de pagamento (após os awaits).
+    var janela = null;
+    if(state.plan && state.plan !== 'nenhum'){
+      janela = window.open('', '_blank');
+    }
+    _goToPlansAsync(name, birth, city, email, pass, janela);
   } catch(e){ console.log('Erro cadastro:', e); }
 }
 
-async function _goToPlansAsync(name, birth, city, email, pass){
+async function _goToPlansAsync(name, birth, city, email, pass, janela){
   try {
     var btn = document.querySelector('#screen-register .btn-primary');
     if(btn){ btn.textContent = 'Criando conta...'; btn.disabled = true; }
@@ -2540,6 +2547,7 @@ async function _goToPlansAsync(name, birth, city, email, pass){
       }
       alert(msg);
       if(btn){ btn.textContent = 'CONTINUAR'; btn.disabled = false; }
+      if(janela && !janela.closed) janela.close();
       return;
     }
 
@@ -2565,18 +2573,31 @@ async function _goToPlansAsync(name, birth, city, email, pass){
     if(btn){ btn.textContent = 'CONTINUAR'; btn.disabled = false; }
 
     if(state.plan && state.plan !== 'nenhum'){
-      await assinarPlano(state.plan, state.metodo || 'mp');
+      await assinarPlano(state.plan, state.metodo || 'mp', janela);
     } else {
+      if(janela && !janela.closed) janela.close();
       showScreen('screen-plans');
     }
   } catch(e){
     console.log('Erro cadastro:', e);
     alert('Erro inesperado. Tente novamente.');
+    if(janela && !janela.closed) janela.close();
   }
 }
 
+// Chamado direto pelos botões da tela de planos (screen-plans).
+// Abre a aba em branco AGORA, ainda dentro do clique, e só então
+// chama assinarPlano (que é assíncrona) para preenchê-la com o link certo.
+function clickAssinar(plan, metodo){
+  var janela = window.open('', '_blank');
+  assinarPlano(plan, metodo, janela);
+}
+
 // SELECT PLAN
-async function assinarPlano(plan, metodo){
+// "janela" (opcional): referência de uma aba já aberta de forma síncrona
+// no clique do usuário (ver goToPlans/clickAssinar), para não sermos
+// bloqueados pelo bloqueador de pop-up do navegador.
+async function assinarPlano(plan, metodo, janela){
   try {
     if(state.userId){
       await sbInsert('pagamentos', {
@@ -2601,7 +2622,15 @@ async function assinarPlano(plan, metodo){
     } catch(e){}
     state.plan = plan;
     var link = (metodo === 'kiwify') ? KIWIFY_LINKS[plan] : MP_LINKS[plan];
-    if(link){ window.open(link, '_blank'); }
+    if(link){
+      if(janela && !janela.closed){
+        janela.location.href = link;
+      } else {
+        window.open(link, '_blank');
+      }
+    } else if(janela && !janela.closed){
+      janela.close();
+    }
     showScreen('screen-aguardando');
   } catch(e){ console.log('assinarPlano erro:',e); }
 }
