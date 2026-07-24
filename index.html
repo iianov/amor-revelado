@@ -2516,12 +2516,12 @@ function goToPlans(){
     if(pass.length < 6){
       alert('A senha deve ter pelo menos 6 caracteres.'); return;
     }
-    // Abre a aba em branco AGORA, ainda dentro do clique do usuário,
-    // para o navegador não bloquear o pop-up. Só navegamos ela depois,
-    // quando soubermos o link de pagamento (após os awaits).
+    // Abre a aba AGORA, ainda dentro do clique do usuário (evita bloqueio
+    // de pop-up) e já com uma tela de carregamento — não navegamos ela
+    // ainda, pois só saberemos o link de pagamento depois dos awaits.
     var janela = null;
     if(state.plan && state.plan !== 'nenhum'){
-      janela = window.open('', '_blank');
+      janela = abrirAbaCarregando();
     }
     _goToPlansAsync(name, birth, city, email, pass, janela);
   } catch(e){ console.log('Erro cadastro:', e); }
@@ -2585,11 +2585,44 @@ async function _goToPlansAsync(name, birth, city, email, pass, janela){
   }
 }
 
+// Abre uma nova aba, ainda dentro do clique do usuário (evita bloqueio de
+// pop-up), e já escreve nela uma tela de carregamento com a cara do app —
+// em vez de deixá-la em branco enquanto o cadastro/pagamento é processado.
+function abrirAbaCarregando(){
+  var janela = window.open('', '_blank');
+  if(janela){
+    try {
+      janela.document.write(
+        '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+        '<title>Amor Revelado</title><style>' +
+        'body{margin:0;background:#1a0f0a;color:#f0dbb8;font-family:Arial,sans-serif;' +
+        'display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+        'height:100vh;text-align:center;padding:20px;box-sizing:border-box}' +
+        '.logo{font-size:36px;margin-bottom:16px}' +
+        '.spinner{width:36px;height:36px;border:3px solid rgba(201,146,42,0.25);' +
+        'border-top-color:#c9922a;border-radius:50%;animation:spin 0.9s linear infinite;margin-bottom:20px}' +
+        '@keyframes spin{to{transform:rotate(360deg)}}' +
+        '.titulo{font-size:13px;letter-spacing:2px;color:#e8b84b;font-weight:600}' +
+        '.sub{font-size:12px;color:#c49a50;margin-top:8px}' +
+        '</style></head><body>' +
+        '<div class="logo">🌹</div>' +
+        '<div class="spinner"></div>' +
+        '<div class="titulo">PREPARANDO SEU PAGAMENTO...</div>' +
+        '<div class="sub">Isso leva só alguns segundos. Não feche esta aba.</div>' +
+        '</body></html>'
+      );
+      janela.document.close();
+    } catch(e){}
+  }
+  return janela;
+}
+
 // Chamado direto pelos botões da tela de planos (screen-plans).
-// Abre a aba em branco AGORA, ainda dentro do clique, e só então
+// Abre a aba AGORA, ainda dentro do clique, e só então
 // chama assinarPlano (que é assíncrona) para preenchê-la com o link certo.
 function clickAssinar(plan, metodo){
-  var janela = window.open('', '_blank');
+  var janela = abrirAbaCarregando();
   assinarPlano(plan, metodo, janela);
 }
 
