@@ -2601,6 +2601,24 @@ async function assinarPlano(plan, metodo){
         state.planoAtivo = true;
       }
     }
+
+    // ============================================
+    // META PIXEL — evento InitiateCheckout
+    // Disparado sempre que a pessoa clica em qualquer botão de plano,
+    // seja cartão (Mercado Pago) ou pix (Kiwify), em qualquer dos 3 planos.
+    // ============================================
+    try {
+      if(typeof fbq === 'function'){
+        var valorPlano = plan==='ambar' ? 19.90 : plan==='rubi' ? 39.90 : 69.90;
+        fbq('track', 'InitiateCheckout', {
+          content_name: plan,
+          content_category: metodo === 'kiwify' ? 'pix' : 'cartao',
+          value: valorPlano,
+          currency: 'BRL'
+        });
+      }
+    } catch(e){ console.log('Erro Pixel InitiateCheckout:', e); }
+
     state.plan = plan;
     var link = (metodo === 'kiwify') ? KIWIFY_LINKS[plan] : MP_LINKS[plan];
     if(link){ window.open(link, '_blank'); }
